@@ -23,7 +23,7 @@ export const invitationData = {
     'And over all these virtues put on love, which binds them all together in perfect unity.',
   quoteSource: 'Colossians 3:14',
   weddingDateIso: '2026-09-12T09:00:00+07:00',
-  musicUrl: 'https://assets.mixkit.co/music/preview/mixkit-serene-view-443.mp3',
+  musicUrl: '/musik.mp3',
 }
 
 export const events = [
