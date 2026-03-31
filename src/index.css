@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Lora:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import '@blinkdotnew/ui/styles';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    letter-spacing: var(--tracking-normal);
+    background-image: radial-gradient(circle at top, rgba(255, 255, 255, 0.7), transparent 34%);
+  }
+}
+
+:root {
+  --background: 36 38% 95%;
+  --foreground: 24 18% 22%;
+  --card: 35 41% 97%;
+  --card-foreground: 24 18% 22%;
+  --popover: 35 41% 97%;
+  --popover-foreground: 24 18% 22%;
+  --primary: 19 45% 54%;
+  --primary-foreground: 36 33% 97%;
+  --secondary: 92 17% 73%;
+  --secondary-foreground: 30 16% 24%;
+  --muted: 32 24% 88%;
+  --muted-foreground: 28 13% 42%;
+  --accent: 31 54% 84%;
+  --accent-foreground: 24 18% 22%;
+  --destructive: 0 70% 55%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 31 28% 85%;
+  --input: 31 28% 85%;
+  --ring: 19 45% 54%;
+  --chart-1: 19 45% 54%;
+  --chart-2: 92 17% 73%;
+  --chart-3: 31 54% 84%;
+  --chart-4: 28 28% 65%;
+  --chart-5: 19 30% 42%;
+  --sidebar: 35 41% 97%;
+  --sidebar-foreground: 24 18% 22%;
+  --sidebar-primary: 19 45% 54%;
+  --sidebar-primary-foreground: 36 33% 97%;
+  --sidebar-accent: 31 54% 84%;
+  --sidebar-accent-foreground: 24 18% 22%;
+  --sidebar-border: 31 28% 85%;
+  --sidebar-ring: 19 45% 54%;
+  --font-sans: 'DM Sans', sans-serif;
+  --font-serif: 'Lora', serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --shadow-2xs: 0 8px 16px -10px hsl(19 35% 38% / 0.12);
+  --shadow-xs: 0 8px 16px -10px hsl(19 35% 38% / 0.12);
+  --shadow-sm: 0 14px 30px -16px hsl(19 35% 34% / 0.18);
+  --shadow: 0 16px 40px -20px hsl(19 35% 34% / 0.18);
+  --shadow-md: 0 20px 50px -24px hsl(19 35% 34% / 0.2);
+  --shadow-lg: 0 30px 80px -30px hsl(19 35% 30% / 0.24);
+  --shadow-xl: 0 40px 100px -34px hsl(19 35% 30% / 0.26);
+  --shadow-2xl: 0 50px 120px -40px hsl(19 35% 28% / 0.35);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+  --radius: 1.5rem;
+}
+
+:root.dark,
+.theme-linear.dark,
+.theme-glass.dark,
+.theme-midnight.dark,
+.theme-minimal.dark {
+  --background: 24 16% 12%;
+  --foreground: 35 30% 90%;
+  --card: 24 18% 16%;
+  --card-foreground: 35 30% 90%;
+  --popover: 24 18% 16%;
+  --popover-foreground: 35 30% 90%;
+  --primary: 22 52% 66%;
+  --primary-foreground: 24 16% 12%;
+  --secondary: 101 13% 28%;
+  --secondary-foreground: 35 30% 90%;
+  --muted: 25 11% 21%;
+  --muted-foreground: 31 18% 70%;
+  --accent: 30 36% 28%;
+  --accent-foreground: 35 30% 90%;
+  --destructive: 0 72% 60%;
+  --destructive-foreground: 35 30% 90%;
+  --border: 28 14% 24%;
+  --input: 28 14% 24%;
+  --ring: 22 52% 66%;
+  --chart-1: 22 52% 66%;
+  --chart-2: 101 13% 34%;
+  --chart-3: 30 36% 35%;
+  --chart-4: 18 28% 52%;
+  --chart-5: 45 30% 60%;
+  --sidebar: 24 18% 16%;
+  --sidebar-foreground: 35 30% 90%;
+  --sidebar-primary: 22 52% 66%;
+  --sidebar-primary-foreground: 24 16% 12%;
+  --sidebar-accent: 30 36% 28%;
+  --sidebar-accent-foreground: 35 30% 90%;
+  --sidebar-border: 28 14% 24%;
+  --sidebar-ring: 22 52% 66%;
+}
+
+.mesh-background {
+  position: relative;
+  background:
+    radial-gradient(circle at 20% 20%, hsl(var(--accent) / 0.8), transparent 28%),
+    radial-gradient(circle at 80% 0%, hsl(var(--secondary) / 0.4), transparent 30%),
+    radial-gradient(circle at 75% 70%, hsl(var(--primary) / 0.16), transparent 26%),
+    linear-gradient(180deg, hsl(33 33% 96%) 0%, hsl(var(--background)) 46%, hsl(30 30% 93%) 100%);
+}
+
+.mesh-background::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 35%, hsl(var(--primary) / 0.12), transparent 24%),
+    radial-gradient(circle at 70% 65%, hsl(var(--accent) / 0.35), transparent 28%);
+  filter: blur(48px);
+  animation: mesh-drift 16s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.invitation-shell {
+  position: relative;
+  z-index: 1;
+}
+
+.luxury-kicker {
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: hsl(var(--primary) / 0.78);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.luxury-title {
+  font-family: var(--font-serif), serif;
+  font-size: clamp(3.35rem, 9vw, 5.8rem);
+  line-height: 0.93;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.luxury-section-title {
+  font-family: var(--font-serif), serif;
+  font-size: clamp(2.45rem, 6vw, 4.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.luxury-copy {
+  font-size: clamp(1rem, 2.4vw, 1.1rem);
+  line-height: 1.9;
+}
+
+.soft-reveal {
+  animation: fade-in-luxury 0.85s var(--ease-luxury) both;
+}
+
+.pressable {
+  transition:
+    transform 180ms var(--ease-luxury),
+    box-shadow 180ms var(--ease-luxury),
+    background-color 180ms var(--ease-luxury);
+}
+
+.pressable:active {
+  transform: scale(0.97);
+}
+
+.pulse-glow {
+  animation: pulse-glow 2.4s ease-in-out infinite;
+}
+
+.timeline-rail {
+  background-image: linear-gradient(to bottom, hsl(var(--primary) / 0.28) 40%, transparent 0%);
+  background-position: left;
+  background-size: 2px 14px;
+  background-repeat: repeat-y;
+}
+
+.gallery-card {
+  transform: translateZ(0);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.gallery-card:hover {
+  transform: translateY(-4px);
+}
+
+@keyframes fade-in-luxury {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 18px 45px rgba(190, 118, 85, 0.2);
+  }
+
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 24px 70px rgba(190, 118, 85, 0.34);
+  }
+}
+
+@keyframes mesh-drift {
+  from {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(2%, 2%, 0) scale(1.06);
+  }
+}
+
+:root {
+  --ease-luxury: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

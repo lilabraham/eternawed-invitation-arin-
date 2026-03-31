@@ -1,0 +1,18 @@
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+// Import @blinkdotnew/ui dihapus
+
+import App from './App'
+import './index.css'
+
+const queryClient = new QueryClient()
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      {/* BlinkUIProvider dan Toaster dihapus karena tidak tersedia di lokal */}
+      <App />
+    </QueryClientProvider>
+  </React.StrictMode>,
+)
