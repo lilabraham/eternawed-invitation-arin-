@@ -14,9 +14,8 @@ import { OnboardingOverlay } from '@/components/invitation/OnboardingOverlay'
 const fadeUp = {
   initial: { opacity: 0, y: 32 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.25 },
-  // Menghapus `ease: 'easeOut'` untuk mengatasi error type dari framer-motion
-  transition: { duration: 0.7 },
+  viewport: { once: true, amount: 0.1 }, // Mengubah 0.25 jadi 0.1 (Scroll enteng)
+  transition: { duration: 0.6 } // Menghapus parameter 'ease' yang bikin error
 }
 
 export default function HomePage() {
@@ -98,14 +97,14 @@ export default function HomePage() {
           >
             <div className="space-y-5 text-primary-foreground">
               <span className="inline-flex w-fit items-center rounded-full border border-white/30 bg-white/10 px-4 py-2 text-[0.65rem] font-medium uppercase tracking-[0.32em] text-white/85 backdrop-blur-md soft-reveal">
-                The wedding of Alya & Raka
+                The wedding of Arin & Hisyam
               </span>
               <div className="space-y-3 soft-reveal">
                 <p className="text-sm uppercase tracking-[0.35em] text-white/80">A modern digital invitation</p>
                 <h1 className="luxury-title text-white">
-                  Alya Nadine
+                  Imelia Arina Manasikana
                   <span className="mx-2 inline-block text-[hsl(var(--accent))]">&</span>
-                  Raka Mahendra
+                  Afif Hisyam Arrasyid
                 </h1>
               </div>
               <p className="luxury-copy max-w-xl text-white/82">
@@ -121,7 +120,7 @@ export default function HomePage() {
                 </button>
                 <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-3 text-sm text-white/80 backdrop-blur-md">
                   <Sparkles className="h-4 w-4 text-[hsl(var(--accent))]" />
-                  Saturday, 12 September 2026 · Jakarta Selatan
+                  Sabtu, 30 Mei 2026 · Randudongkal
                 </div>
               </div>
             </div>

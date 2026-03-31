@@ -1,53 +1,43 @@
 export const invitationData = {
   bride: {
-    name: 'Alya Nadine',
+    name: 'Imelia Arina Manasikana',
     role: 'The Bride',
-    description:
-      'A warm-hearted architect who turns quiet moments into beautiful stories and finds magic in thoughtful details.',
-    instagram: 'https://instagram.com/alya.nadine',
-    image:
-      'https://images.unsplash.com/photo-1705041217531-4443b6ecf8bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=900',
+    description: 'Putri tercinta dari Bapak & Ibu yang senantiasa menebar kebaikan dan kehangatan dalam setiap langkahnya.',
+    instagram: 'https://instagram.com/imelia.arina',
+    image: 'https://images.unsplash.com/photo-1705041217531-4443b6ecf8bc?q=80&w=900', // Gunakan foto Imelia
   },
   groom: {
-    name: 'Raka Mahendra',
+    name: 'Afif Hisyam Arrasyid',
     role: 'The Groom',
-    description:
-      'A calm creative strategist with a love for timeless design, soft jazz, and making every promise feel intentional.',
-    instagram: 'https://instagram.com/raka.mahendra',
-    image:
-      'https://images.unsplash.com/photo-1710587384936-b6d796c0eb58?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=900',
+    description: 'Putra kebanggaan keluarga yang berdedikasi, penuh tanggung jawab, dan membangun masa depan dengan ketulusan hati.',
+    instagram: 'https://instagram.com/afif.hisyam',
+    image: 'https://images.unsplash.com/photo-1710587384936-b6d796c0eb58?q=80&w=900', // Gunakan foto Afif
   },
-  heroImage:
-    'https://images.unsplash.com/photo-1761211488173-a7154314420a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1600',
-  quote:
-    'And over all these virtues put on love, which binds them all together in perfect unity.',
-  quoteSource: 'Colossians 3:14',
-  weddingDateIso: '2026-09-12T09:00:00+07:00',
+  heroImage: 'https://images.unsplash.com/photo-1761211488173-a7154314420a?q=80&w=1600',
+  quote: 'Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.',
+  quoteSource: 'QS. Ar-Rum: 21',
+  weddingDateIso: '2026-05-30T09:00:00+07:00', // 30 Mei 2026
   musicUrl: '/musik.mp3',
 }
 
 export const events = [
   {
     title: 'Akad Nikah',
-    dateLabel: 'Saturday, 12 September 2026',
-    timeLabel: '09.00 WIB - 11.00 WIB',
-    venue: 'Bumi Aruna Pavilion, Jakarta Selatan',
-    address: 'Jl. Aruna Raya No. 18, Cilandak, Jakarta Selatan',
-    mapsUrl:
-      'https://www.google.com/maps/search/?api=1&query=Bumi+Aruna+Pavilion+Jakarta+Selatan',
-    calendarUrl:
-      'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Akad+Nikah+Alya+%26+Raka&dates=20260912T020000Z/20260912T040000Z&details=Join+our+akad+nikah+celebration.&location=Bumi+Aruna+Pavilion+Jakarta+Selatan',
+    dateLabel: 'Sabtu, 30 Mei 2026',
+    timeLabel: '09.00 WIB - Selesai',
+    venue: 'Kediaman Mempelai Wanita',
+    address: 'Jl. Lkr. Utara No.02, Dusun I, Randudongkal, Kec. Randudongkal, Kabupaten Pemalang, Jawa Tengah 52353 (Masuk gang Yuna Print)',
+    mapsUrl: 'https://www.google.com/maps?q=-7.096988037704065, 109.32443035659291', // Sesuai alamat Pemalang
+    calendarUrl: 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Akad+Nikah+Imelia+%26+Afif&dates=20260530T020000Z/20260530T040000Z',
   },
   {
     title: 'Resepsi',
-    dateLabel: 'Saturday, 12 September 2026',
-    timeLabel: '18.30 WIB - 21.00 WIB',
-    venue: 'Atelier Garden Hall, Jakarta Selatan',
-    address: 'Jl. Taman Senja No. 27, Kebayoran Baru, Jakarta Selatan',
-    mapsUrl:
-      'https://www.google.com/maps/search/?api=1&query=Atelier+Garden+Hall+Jakarta+Selatan',
-    calendarUrl:
-      'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Resepsi+Alya+%26+Raka&dates=20260912T113000Z/20260912T140000Z&details=Celebrate+with+us+at+our+wedding+reception.&location=Atelier+Garden+Hall+Jakarta+Selatan',
+    dateLabel: 'Minggu, 31 Mei 2026',
+    timeLabel: '09.00 WIB - Selesai',
+    venue: 'Kediaman Mempelai Wanita',
+    address: 'Jl. Lkr. Utara No.02, Dusun I, Randudongkal, Kabupaten Pemalang, Jawa Tengah 52353 (Masuk gang Yuna Print).',
+    mapsUrl: 'https://www.google.com/maps?q=-7.096988037704065, 109.32443035659291',
+    calendarUrl: 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Resepsi+Imelia+%26+Afif&dates=20260530T060000Z/20260530T090000Z',
   },
 ] as const
 
