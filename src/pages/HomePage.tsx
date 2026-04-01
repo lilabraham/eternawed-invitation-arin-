@@ -321,7 +321,7 @@ export default function HomePage() {
               <div className="space-y-1 pt-4">
                 <p className="text-sm uppercase tracking-[0.25em] text-muted-foreground">Kami yang berbahagia,</p>
                 <p className="font-serif text-2xl italic text-foreground">
-                  Keluarga Besar Imelia & Afif
+                  Keluarga Besar Arin & Hisyam
                 </p>
               </div>
             </div>
