@@ -364,7 +364,7 @@ export default function HomePage() {
         <section className="pb-24 pt-10 text-center">
           <motion.div {...fadeUp} viewport={{ once: true, amount: 0.5 }}>
             {/* "Imelia & Afif" menggunakan emas #D4AF37/70 agar kontras dan mewah */}
-            <p className="font-script text-4xl md:text-5xl text-[#D4AF37]/70">Imelia & Hisyam</p>
+            <p className="font-script text-4xl md:text-5xl text-[#D4AF37]/70">Arin & Hisyam</p>
             {/* ✅ "Forever Begins..." diganti dari putih menjadi emas transparan #D4AF37/70 agar kontras di area terang */}
             <p className="mt-4 text-[0.65rem] uppercase tracking-[0.4em] text-[#D4AF37]/70">Forever Begins • 30 Mei 2026</p>
           </motion.div>
