@@ -50,7 +50,8 @@ export function RsvpSection() {
     <section className="px-4 py-24 sm:px-6 lg:px-10">
       <div className="invitation-shell mx-auto max-w-6xl">
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.7 }} className="mb-10 max-w-2xl">
-          <p className="text-sm uppercase tracking-[0.35em] text-primary/80">RSVP & Wishes</p>
+          {/* ✅ FIX: Warna diubah menjadi emas Luxury (#D4AF37) agar kontras dan terbaca jelas */}
+          <p className="text-sm uppercase tracking-[0.35em] text-[#D4AF37] font-semibold">RSVP & Wishes</p>
           <h2 className="mt-3 font-serif text-4xl text-foreground sm:text-5xl">Let us know you’ll be there and leave a note we’ll keep close.</h2>
         </motion.div>
 
@@ -127,7 +128,8 @@ export function RsvpSection() {
                 </div>
               ) : wishes.length === 0 ? (
                 <div className="rounded-[1.75rem] border border-dashed border-[hsl(var(--primary)/0.24)] bg-[hsl(var(--background)/0.55)] p-8 text-center text-sm leading-7 text-muted-foreground">
-                  Be the first to leave a heartfelt wish for Alya & Raka.
+                  {/* ✅ FIX: Ganti nama menjadi Arin & Hisyam */}
+                  Be the first to leave a heartfelt wish for Arin & Hisyam.
                 </div>
               ) : (
                 <div className="overflow-hidden rounded-[1.75rem] border border-white/40 bg-[hsl(var(--background)/0.55)] py-4">

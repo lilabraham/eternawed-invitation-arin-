@@ -155,18 +155,35 @@ export default function HomePage() {
             className="invitation-shell relative z-10 mx-auto grid w-full max-w-6xl gap-8 overflow-hidden rounded-[2rem] border border-white/35 bg-[hsl(var(--background)/0.18)] p-6 shadow-[0_30px_100px_rgba(70,49,35,0.22)] backdrop-blur-md md:p-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end"
           >
             <div className="space-y-5 text-primary-foreground">
-              <span className="inline-flex w-fit items-center rounded-full border border-white/30 bg-white/10 px-4 py-2 text-[0.65rem] font-medium uppercase tracking-[0.32em] text-white/85 backdrop-blur-md soft-reveal">
-                The wedding of Arin & Hisyam
-              </span>
-              <div className="space-y-3 soft-reveal">
-                {/* ✅ Teks diganti jadi lebih romantis dan diberi aksen warna emas/kuning luxury */}
-                <p className="text-sm uppercase tracking-[0.35em] text-[#D4AF37]">A Celebration of Love</p>
-                <h1 className="luxury-title text-white text-3xl md:text-5xl leading-tight">
-                  Imelia Arina Manasikana
-                  <span className="mx-2 inline-block text-[hsl(var(--accent))]">&</span>
-                  Afif Hisyam Arrasyid
-                </h1>
-              </div>
+                {/* Bumbu 1: Bismillah kecil elegan di atas untuk sentuhan sakral */}
+                <div className="soft-reveal text-white/70 font-serif text-lg tracking-widest">
+                  بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم
+                </div>
+
+                <span className="inline-flex w-fit items-center rounded-full border border-white/30 bg-white/10 px-4 py-2 text-[0.65rem] font-medium uppercase tracking-[0.32em] text-white/85 backdrop-blur-md soft-reveal">
+                  The wedding of Arin & Hisyam
+                </span>
+                
+                <div className="space-y-2 soft-reveal"> {/* ✅ Menggunakan space-y-2 agar lebih rapat & elegan */}
+                  {/* Bumbu: A Celebration of Love dengan Font Script */}
+                  <p className="font-script text-4xl md:text-5xl text-[#D4AF37] capitalize tracking-normal mb-1">
+                    A Celebration of Love
+                  </p>
+                  
+                  <h1 className="luxury-title text-white text-4xl md:text-5xl leading-tight">
+                    Imelia Arina Manasikana
+                    {/* Simbol '&' emas yang meliuk indah */}
+                    <span className="mx-3 inline-block font-script text-5xl md:text-6xl text-[#D4AF37] align-middle">&</span>
+                    Afif Hisyam Arrasyid
+                  </h1>
+
+                  {/* ✅ TAMBAHAN: Wedding Ring Icon Kecil - Pembeda Utama dengan Website Biasa */}
+                  <div className="flex items-center gap-3 pt-2">
+                    <div className="h-px w-8 bg-[#D4AF37]/40" />
+                    <Heart className="h-4 w-4 text-[#D4AF37] fill-[#D4AF37]/20" />
+                    <div className="h-px w-8 bg-[#D4AF37]/40" />
+                  </div>
+                </div>
               <p className="luxury-copy max-w-xl text-white/90 font-light leading-relaxed">
                 An intimate celebration wrapped in warm light, soft textures, and heartfelt promises. You are invited to witness the beginning of our forever.
               </p>
@@ -186,7 +203,10 @@ export default function HomePage() {
               </div>
             </div>
             <div className="rounded-[1.75rem] border border-white/30 bg-white/12 p-5 text-white backdrop-blur-xl sm:p-6">
-              <p className="text-xs uppercase tracking-[0.32em] text-white/70">{guestName}</p>
+              {/* ✅ FIX: Nama tamu dibuat seperti tulisan tangan kaligrafi di amplop VIP */}
+              <p className="text-[0.65rem] uppercase tracking-[0.3em] text-white/50 mb-1">Dear,</p>
+              <p className="font-script text-3xl md:text-4xl text-[#D4AF37] tracking-normal">{guestName}</p>
+              
               <div className="mt-5 space-y-4">
                 <div>
                   <p className="text-sm text-white/70">Join us in a day of vows, blessings, and a beautifully slow celebration.</p>
@@ -217,8 +237,8 @@ export default function HomePage() {
         <section className="px-4 py-8 sm:px-6 lg:px-10">
           <div className="invitation-shell mx-auto max-w-6xl">
             <motion.div {...fadeUp} className="mb-8 max-w-2xl">
-              <p className="luxury-kicker">The Couple</p>
-              <h2 className="luxury-section-title mt-3 text-foreground">Two souls, one intentional story.</h2>
+              <p className="luxury-kicker">Sang Mempelai</p>
+              <h2 className="luxury-section-title mt-3 text-foreground">Dua jiwa yang dipersatukan dalam satu ikatan suci.</h2>
             </motion.div>
             <div className="grid gap-5 lg:grid-cols-2">
               {coupleCards.map((person, index) => (
@@ -263,7 +283,7 @@ export default function HomePage() {
           <div className="invitation-shell mx-auto max-w-6xl space-y-8">
             <motion.div {...fadeUp} className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div>
-                <p className="luxury-kicker">Event Details</p>
+                <p className="luxury-kicker">Rangkaian Acara</p>
                 <h2 className="luxury-section-title mt-3 text-foreground">Save the date for our sacred and joyful day.</h2>
               </div>
               <div className="grid grid-cols-4 gap-2 rounded-[1.75rem] border border-white/45 bg-[hsl(var(--card)/0.72)] p-3 shadow-[0_20px_50px_rgba(89,69,52,0.1)] backdrop-blur-xl">
@@ -339,6 +359,17 @@ export default function HomePage() {
 
         <GiftRegistrySection />
         <RsvpSection />
+        
+        {/* ✅ FIX: Signature di paling bawah menggunakan warna emas Luxury untuk kedua teks */}
+        <section className="pb-24 pt-10 text-center">
+          <motion.div {...fadeUp} viewport={{ once: true, amount: 0.5 }}>
+            {/* "Imelia & Afif" menggunakan emas #D4AF37/70 agar kontras dan mewah */}
+            <p className="font-script text-4xl md:text-5xl text-[#D4AF37]/70">Imelia & Hisyam</p>
+            {/* ✅ "Forever Begins..." diganti dari putih menjadi emas transparan #D4AF37/70 agar kontras di area terang */}
+            <p className="mt-4 text-[0.65rem] uppercase tracking-[0.4em] text-[#D4AF37]/70">Forever Begins • 30 Mei 2026</p>
+          </motion.div>
+        </section>
+
       </main>
 
       <audio ref={audioRef} src={invitationData.musicUrl} loop preload="none" />
