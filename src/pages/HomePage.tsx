@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { CalendarDays, ExternalLink, Heart, MapPin, Sparkles } from 'lucide-react'
 
 import { AudioOrb } from '@/components/invitation/AudioOrb'
@@ -64,6 +64,7 @@ const Stardust = () => {
 
 export default function HomePage() {
   const quoteRef = useRef<HTMLElement | null>(null)
+  const detailsRef = useRef<HTMLElement | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const timelineRef = useRef<HTMLElement | null>(null)
   const [showOverlay, setShowOverlay] = useState(true)
@@ -107,22 +108,26 @@ export default function HomePage() {
     }
   }
 
-  const handleOpenInvitation = async () => {
+ const handleOpenInvitation = () => {
+    // 1. Memicu animasi keluar (exit) overlay secara instan
     setShowOverlay(false)
 
+    // 2. Memberikan jeda 600ms sebelum memutar musik agar CPU ponsel tidak kaget (menghilangkan efek "deg")
     window.setTimeout(async () => {
-      quoteRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      if (!isPlaying) {
+      if (!isPlaying && audioRef.current) {
         try {
-          await audioRef.current?.play()
+          await audioRef.current.play()
           setIsPlaying(true)
         } catch {
           setIsPlaying(false)
         }
       }
-    }, 80)
+    }, 600) // Musik mulai mengalun saat tirai sudah setengah terbuka
   }
 
+  const scrollToDetails = () => {
+    detailsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
   return (
     // FIX IOS STUCK 1: Ganti 'overflow-x-hidden' menjadi 'w-full overflow-clip' 
     // Ini mencegah error stuck momentum scroll di iPhone
@@ -142,9 +147,11 @@ export default function HomePage() {
           <div className="absolute inset-0 z-1 bg-[linear-gradient(180deg,rgba(54,40,32,0.12)_0%,rgba(54,40,32,0.58)_58%,rgba(24,18,14,0.98)_100%)]" />
           
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9 }}
+            // Menambahkan scale agar ada efek kedalaman (depth)
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={showOverlay ? { opacity: 0, y: 30, scale: 0.95 } : { opacity: 1, y: 0, scale: 1 }}
+            // Menggunakan custom bezier [0.25, 1, 0.5, 1] untuk efek berhenti perlahan (Deceleration)
+            transition={{ duration: 1.4, delay: 0.4, ease: [0.25, 1, 0.5, 1] }}
             className="invitation-shell relative z-10 mx-auto grid w-full max-w-6xl gap-8 overflow-hidden rounded-[2rem] border border-white/35 bg-[hsl(var(--background)/0.18)] p-6 shadow-[0_30px_100px_rgba(70,49,35,0.22)] backdrop-blur-md md:p-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end"
           >
             <div className="space-y-5 text-primary-foreground">
@@ -152,8 +159,9 @@ export default function HomePage() {
                 The wedding of Arin & Hisyam
               </span>
               <div className="space-y-3 soft-reveal">
-                <p className="text-sm uppercase tracking-[0.35em] text-white/80">A modern digital invitation</p>
-                <h1 className="luxury-title text-white">
+                {/* ✅ Teks diganti jadi lebih romantis dan diberi aksen warna emas/kuning luxury */}
+                <p className="text-sm uppercase tracking-[0.35em] text-[#D4AF37]">A Celebration of Love</p>
+                <h1 className="luxury-title text-white text-3xl md:text-5xl leading-tight">
                   Imelia Arina Manasikana
                   <span className="mx-2 inline-block text-[hsl(var(--accent))]">&</span>
                   Afif Hisyam Arrasyid
@@ -163,12 +171,13 @@ export default function HomePage() {
                 An intimate celebration wrapped in warm light, soft textures, and heartfelt promises. You are invited to witness the beginning of our forever.
               </p>
               <div className="flex flex-col gap-3 pt-2 sm:flex-row">
+                {/* ✅ Fungsi onClick diganti ke scrollToDetails, teks diganti 'View Details' */}
                 <button
                   type="button"
-                  onClick={handleOpenInvitation}
-                  className="pulse-glow pressable h-12 rounded-full bg-primary px-7 text-sm font-medium text-primary-foreground shadow-[0_18px_45px_rgba(190,118,85,0.35)] hover:scale-[1.02] active:scale-95"
+                  onClick={scrollToDetails}
+                  className="pulse-glow pressable h-12 rounded-full bg-primary px-7 text-sm font-medium text-primary-foreground shadow-[0_18px_45px_rgba(190,118,85,0.35)] hover:scale-[1.02] active:scale-95 transition-transform"
                 >
-                  Open Invitation
+                  View Details
                 </button>
                 <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-3 text-sm text-white/80 backdrop-blur-md">
                   <Sparkles className="h-4 w-4 text-[hsl(var(--accent))]" />
@@ -176,7 +185,6 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-
             <div className="rounded-[1.75rem] border border-white/30 bg-white/12 p-5 text-white backdrop-blur-xl sm:p-6">
               <p className="text-xs uppercase tracking-[0.32em] text-white/70">{guestName}</p>
               <div className="mt-5 space-y-4">
@@ -250,7 +258,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="px-4 py-24 sm:px-6 lg:px-10">
+       {/* ✅ Pasang detailsRef di sini agar layar tahu harus scroll ke mana */}
+        <section ref={detailsRef} className="px-4 py-24 sm:px-6 lg:px-10">
           <div className="invitation-shell mx-auto max-w-6xl space-y-8">
             <motion.div {...fadeUp} className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div>
@@ -339,11 +348,21 @@ export default function HomePage() {
         {!showOverlay && <AudioOrb isPlaying={isPlaying} onToggle={toggleMusic} />}
       </div>
 
-      {showOverlay && (
-        <div className="relative z-[60]">
-          <OnboardingOverlay guestName={guestName} onOpenInvitation={handleOpenInvitation} />
-        </div>
-      )}
+      {/* MENGGUNAKAN ANIMATE PRESENCE UNTUK TRANSISI "MEMBUKA UNDANGAN" YANG SANGAT HALUS */}
+      <AnimatePresence>
+        {showOverlay && (
+          <motion.div 
+            key="onboarding-overlay"
+            // will-change-transform mengaktifkan Hardware Acceleration agar tidak lag
+            className="fixed inset-0 z-[70] origin-center will-change-transform"
+            // Efek Zoom-In ke dalam layar sambil nge-blur
+            exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }} 
+            transition={{ duration: 1.2, ease: [0.32, 0.72, 0, 1] }} 
+          >
+            <OnboardingOverlay guestName={guestName} onOpenInvitation={handleOpenInvitation} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
