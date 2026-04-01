@@ -1,22 +1,66 @@
-import { useMemo, useRef, useState, useEffect } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { CalendarDays, ExternalLink, Heart, MapPin, Sparkles } from 'lucide-react'
-
-// Import @blinkdotnew/ui dihapus
 
 import { AudioOrb } from '@/components/invitation/AudioOrb'
 import { GiftRegistrySection } from '@/components/invitation/GiftRegistrySection'
 import { RsvpSection } from '@/components/invitation/RsvpSection'
-import { events, galleryPhotos, invitationData, loveStory } from '@/content/invitationData'
+import { events, invitationData } from '@/content/invitationData'
 import { useCountdown } from '@/hooks/useCountdown'
 import { OnboardingOverlay } from '@/components/invitation/OnboardingOverlay'
 
 const fadeUp = {
   initial: { opacity: 0, y: 32 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.1 }, // Mengubah 0.25 jadi 0.1 (Scroll enteng)
-  transition: { duration: 0.6 } // Menghapus parameter 'ease' yang bikin error
+  viewport: { once: true, amount: 0.1 }, 
+  // FIX TS ERROR: Tambahkan 'as const' agar TypeScript tidak marah
+  transition: { duration: 0.6, ease: "easeOut" as const } 
 }
+
+// --- KOMPONEN EFEK LUXURY: GOLDEN STARDUST (DI DEPAN LAYAR) ---
+const Stardust = () => {
+  const particles = useMemo(() => {
+    return Array.from({ length: 45 }).map((_, i) => ({
+      id: i,
+      x: Math.random() * 100, 
+      y: Math.random() * 100, 
+      size: Math.random() * 2.5 + 1.5, 
+      duration: Math.random() * 20 + 15, 
+      delay: Math.random() * 5, 
+      opacity: Math.random() * 0.6 + 0.2, 
+    }))
+  }, [])
+
+  return (
+    // FIX IOS: Tambahkan 'touch-none' agar partikel tidak menangkap sentuhan jari
+    <div className="fixed inset-0 z-[30] pointer-events-none touch-none overflow-hidden">
+      {particles.map((p) => (
+        <motion.div
+          key={p.id}
+          className="absolute rounded-full bg-[#D4AF37] shadow-[0_0_12px_3px_rgba(212,175,55,0.6)]" 
+          style={{
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+            width: p.size,
+            height: p.size,
+          }}
+          animate={{
+            y: [0, -1000], 
+            x: p.id % 2 === 0 ? [0, 40, -40, 0] : [0, -40, 40, 0], 
+            opacity: [0, p.opacity, 0], 
+          }}
+          transition={{
+            duration: p.duration,
+            repeat: Infinity,
+            ease: "linear",
+            delay: p.delay,
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+// --- AKHIR KOMPONEN STARDUST ---
 
 export default function HomePage() {
   const quoteRef = useRef<HTMLElement | null>(null)
@@ -25,11 +69,11 @@ export default function HomePage() {
   const [showOverlay, setShowOverlay] = useState(true)
   const [isPlaying, setIsPlaying] = useState(false)
   const countdown = useCountdown(invitationData.weddingDateIso)
+  
   const { scrollYProgress } = useScroll({
     target: timelineRef,
     offset: ['start 80%', 'end 35%'],
   })
-  const timelineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
 
   const guestName = useMemo(() => {
     if (typeof window === 'undefined') return 'Our Dearest Guest'
@@ -80,20 +124,28 @@ export default function HomePage() {
   }
 
   return (
-    <div className="mesh-background min-h-screen overflow-x-hidden text-foreground">
-      <main>
-        <section className="relative flex min-h-screen items-end overflow-hidden px-4 pb-10 pt-8 sm:px-6 lg:px-10 lg:pb-12">
+    // FIX IOS STUCK 1: Ganti 'overflow-x-hidden' menjadi 'w-full overflow-clip' 
+    // Ini mencegah error stuck momentum scroll di iPhone
+    <div className="mesh-background relative min-h-screen w-full overflow-clip text-foreground">
+      
+      <Stardust />
+
+      <main className="relative z-10">
+        {/* FIX IOS STUCK 2: Ganti min-h-screen menjadi min-h-[100dvh] */}
+        {/* dvh (Dynamic Viewport Height) mencegah layar meloncat saat address bar Safari hilang/muncul */}
+        <section className="relative flex min-h-[100dvh] items-end overflow-hidden px-4 pb-10 pt-8 sm:px-6 lg:px-10 lg:pb-12">
           <img
             src={invitationData.heroImage}
             alt="Romantic wedding couple embracing at sunset"
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 z-0 h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(54,40,32,0.12)_0%,rgba(54,40,32,0.58)_58%,rgba(247,243,237,0.9)_100%)]" />
+          <div className="absolute inset-0 z-1 bg-[linear-gradient(180deg,rgba(54,40,32,0.12)_0%,rgba(54,40,32,0.58)_58%,rgba(24,18,14,0.98)_100%)]" />
+          
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9 }}
-            className="invitation-shell relative mx-auto grid w-full max-w-6xl gap-8 overflow-hidden rounded-[2rem] border border-white/35 bg-[hsl(var(--background)/0.18)] p-6 shadow-[0_30px_100px_rgba(70,49,35,0.22)] backdrop-blur-md md:p-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end"
+            className="invitation-shell relative z-10 mx-auto grid w-full max-w-6xl gap-8 overflow-hidden rounded-[2rem] border border-white/35 bg-[hsl(var(--background)/0.18)] p-6 shadow-[0_30px_100px_rgba(70,49,35,0.22)] backdrop-blur-md md:p-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end"
           >
             <div className="space-y-5 text-primary-foreground">
               <span className="inline-flex w-fit items-center rounded-full border border-white/30 bg-white/10 px-4 py-2 text-[0.65rem] font-medium uppercase tracking-[0.32em] text-white/85 backdrop-blur-md soft-reveal">
@@ -107,7 +159,7 @@ export default function HomePage() {
                   Afif Hisyam Arrasyid
                 </h1>
               </div>
-              <p className="luxury-copy max-w-xl text-white/82">
+              <p className="luxury-copy max-w-xl text-white/90 font-light leading-relaxed">
                 An intimate celebration wrapped in warm light, soft textures, and heartfelt promises. You are invited to witness the beginning of our forever.
               </p>
               <div className="flex flex-col gap-3 pt-2 sm:flex-row">
@@ -164,10 +216,9 @@ export default function HomePage() {
               {coupleCards.map((person, index) => (
                 <motion.div
                   key={person.name}
-                  initial={{ opacity: 0, y: 34 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.7, delay: index * 0.12 }}
+                  {...fadeUp}
+                  // FIX TS ERROR: Gunakan as any untuk membypass strict type checking
+                  transition={{ ...(fadeUp.transition as any), delay: index * 0.12 }}
                 >
                   <div className="overflow-hidden rounded-[2rem] border-white/45 bg-[hsl(var(--card)/0.66)] shadow-[0_28px_70px_rgba(88,66,49,0.12)] backdrop-blur-2xl">
                     <div className="relative p-6 sm:p-8">
@@ -218,7 +269,12 @@ export default function HomePage() {
 
             <div className="grid gap-5 lg:grid-cols-2">
               {events.map((event, index) => (
-                <motion.div key={event.title} {...fadeUp} transition={{ ...fadeUp.transition, delay: index * 0.1 }}>
+                <motion.div 
+                  key={event.title} 
+                  {...fadeUp} 
+                  // FIX TS ERROR: Gunakan as any
+                  transition={{ ...(fadeUp.transition as any), delay: index * 0.1 }}
+                >
                   <div className="h-full rounded-[2rem] border-white/45 bg-[hsl(var(--card)/0.7)] shadow-[0_24px_80px_rgba(88,66,49,0.11)] backdrop-blur-2xl">
                     <div className="flex h-full flex-col gap-6 p-6 sm:p-8">
                       <div className="space-y-2">
@@ -245,94 +301,48 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section ref={timelineRef} className="px-4 py-24 sm:px-6 lg:px-10">
-          <div className="invitation-shell mx-auto max-w-6xl">
-            <motion.div {...fadeUp} className="mb-12 max-w-2xl">
-              <p className="luxury-kicker">Love Story</p>
-              <h2 className="luxury-section-title mt-3 text-foreground">A timeline of quiet beginnings and certain promises.</h2>
-            </motion.div>
-
-            <div className="relative">
-              <div className="timeline-rail absolute bottom-0 left-[18px] top-0 w-[2px] md:left-1/2 md:-translate-x-1/2" />
-              <motion.div
-                style={{ height: timelineHeight }}
-                className="absolute left-[18px] top-0 w-[2px] rounded-full bg-primary md:left-1/2 md:-translate-x-1/2"
-              />
-
-              <div className="space-y-10 md:space-y-2">
-                {loveStory.map((story, index) => {
-                  const isRight = index % 2 === 1
-
-                  return (
-                    <motion.div
-                      key={story.title}
-                      initial={{ opacity: 0, x: isRight ? 32 : -32, y: 24 }}
-                      whileInView={{ opacity: 1, x: 0, y: 0 }}
-                      viewport={{ once: true, amount: 0.25 }}
-                      transition={{ duration: 0.7, delay: index * 0.08 }}
-                      className="relative grid gap-4 md:grid-cols-2 md:gap-10"
-                    >
-                      <div className={isRight ? 'md:col-start-2' : 'md:col-start-1'}>
-                        <div className="ml-12 rounded-[1.75rem] border border-white/45 bg-[hsl(var(--card)/0.72)] shadow-[0_22px_70px_rgba(88,66,49,0.1)] backdrop-blur-2xl md:ml-0">
-                          <div className="space-y-3 p-6">
-                            <p className="text-xs uppercase tracking-[0.35em] text-primary/75">{story.year}</p>
-                            <h3 className="font-serif text-2xl text-foreground">{story.title}</h3>
-                            <p className="text-sm leading-7 text-muted-foreground">{story.description}</p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="absolute left-[18px] top-8 h-4 w-4 -translate-x-1/2 rounded-full border-4 border-[hsl(var(--background))] bg-primary shadow-[0_0_0_8px_hsl(var(--card)/0.7)] md:left-1/2" />
-                    </motion.div>
-                  )
-                })}
+        <motion.section {...fadeUp} className="px-4 py-24 sm:px-6 lg:px-10">
+          <div className="invitation-shell mx-auto max-w-4xl space-y-12 rounded-[2rem] border border-white/45 bg-[hsl(var(--card)/0.64)] px-6 py-16 text-center shadow-[0_20px_70px_rgba(100,77,59,0.09)] backdrop-blur-2xl sm:px-12 sm:py-20">
+            <div className="space-y-6">
+              <p className="luxury-kicker">Doa & Restu</p>
+              <h2 className="font-serif text-3xl leading-relaxed text-foreground sm:text-4xl lg:text-5xl" style={{ lineHeight: '1.6' }}>
+                بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ
+              </h2>
+              <p className="luxury-copy mx-auto max-w-2xl text-muted-foreground">
+                "Semoga Allah memberkahimu di waktu bahagia dan memberkahimu di waktu susah, serta mengumpulkan kalian berdua dalam kebaikan."
+              </p>
+              <p className="text-sm uppercase tracking-[0.32em] text-primary/80">(HR. Abu Dawud)</p>
+            </div>
+            <div className="mx-auto h-px w-32 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+            <div className="space-y-6">
+              <p className="luxury-copy mx-auto max-w-2xl text-foreground">
+                Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kedua mempelai.
+              </p>
+              <div className="space-y-1 pt-4">
+                <p className="text-sm uppercase tracking-[0.25em] text-muted-foreground">Kami yang berbahagia,</p>
+                <p className="font-serif text-2xl italic text-foreground">
+                  Keluarga Besar Imelia & Afif
+                </p>
               </div>
             </div>
           </div>
-        </section>
-
-        <section className="px-4 pb-10 sm:px-6 lg:px-10">
-          <div className="invitation-shell mx-auto max-w-6xl">
-            <motion.div {...fadeUp} className="mb-12 max-w-2xl">
-              <p className="luxury-kicker">Gallery</p>
-              <h2 className="luxury-section-title mt-3 text-foreground">Pre-wedding frames in a soft bento composition.</h2>
-            </motion.div>
-
-            <div className="grid auto-rows-[180px] gap-4 md:grid-cols-3 md:auto-rows-[220px]">
-              {galleryPhotos.map((photo, index) => (
-                <motion.div
-                  key={photo.src}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.65, delay: index * 0.06 }}
-                  whileHover={{ y: -4 }}
-                  className={`gallery-card group relative overflow-hidden rounded-[1.75rem] border border-white/40 bg-[hsl(var(--card)/0.5)] shadow-[0_22px_60px_rgba(88,66,49,0.12)] backdrop-blur-xl ${photo.className}`}
-                >
-                  <motion.img
-                    src={photo.src}
-                    alt={photo.alt}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    initial={{ scale: 1.08 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true, amount: 0.2 }}
-                    transition={{ duration: 1.1 }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-white/10" />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+        </motion.section>
 
         <GiftRegistrySection />
         <RsvpSection />
       </main>
+
       <audio ref={audioRef} src={invitationData.musicUrl} loop preload="none" />
-      {!showOverlay && <AudioOrb isPlaying={isPlaying} onToggle={toggleMusic} />}
+      
+      {/* Memastikan elemen interaktif overlay dan musik tetap di atas semuanya z-[50] */}
+      <div className="relative z-[50]">
+        {!showOverlay && <AudioOrb isPlaying={isPlaying} onToggle={toggleMusic} />}
+      </div>
 
       {showOverlay && (
-        <OnboardingOverlay guestName={guestName} onOpenInvitation={handleOpenInvitation} />
+        <div className="relative z-[60]">
+          <OnboardingOverlay guestName={guestName} onOpenInvitation={handleOpenInvitation} />
+        </div>
       )}
     </div>
   )

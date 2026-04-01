@@ -26,12 +26,13 @@ export function OnboardingOverlay({ guestName, onOpenInvitation }: OnboardingOve
     >
       <div className="invitation-shell soft-reveal relative mx-auto grid w-full max-w-xl gap-8 overflow-hidden rounded-[2rem] border border-white/35 bg-[hsl(var(--background)/0.18)] p-6 shadow-[0_30px_100px_rgba(70,49,35,0.22)] backdrop-blur-md md:p-8">
         <motion.div variants={itemVariants} className="space-y-5 text-center text-primary-foreground">
-          <span className="inline-flex w-fit self-center rounded-full border border-white/30 bg-white/10 px-4 py-2 text-[0.65rem] font-medium uppercase tracking-[0.32em] text-white/85 backdrop-blur-md">
+          <span className="inline-flex w-fit self-center rounded-full border border-white/30 bg-white/10 px-4 py-2 text-[0.65rem] font-medium uppercase tracking-[0.32em] text-white/90 backdrop-blur-md">
             You are invited
           </span>
-          <div className="space-y-3">
+          <div className="space-y-4">
             <h1 className="luxury-section-title text-white">A Special Invitation</h1>
-            <p className="mx-auto max-w-xl text-base leading-7 text-white/82 sm:text-lg">
+            {/* SURGICAL FIX: Menggunakan text-white/90 dan font-light agar terbaca jelas namun tetap elegan */}
+            <p className="mx-auto max-w-xl text-base font-light leading-relaxed text-white/90 sm:text-lg">
               An intimate celebration of love, commitment, and beautifully slow moments meant to be shared with you.
             </p>
           </div>
@@ -54,7 +55,7 @@ export function OnboardingOverlay({ guestName, onOpenInvitation }: OnboardingOve
 
         <motion.div variants={itemVariants} className="flex items-center justify-center gap-2 text-sm text-white/80">
           <Sparkles className="h-4 w-4 text-[hsl(var(--accent))]" />
-          <p>A new chapter begins in soft light.</p>
+          <p className="font-light">A new chapter begins in soft light.</p>
         </motion.div>
       </div>
     </motion.div>
