@@ -44,8 +44,16 @@ export function GiftRegistrySection() {
           transition={{ duration: 0.7 }} 
           className="mb-10 max-w-2xl"
         >
-          <p className="luxury-kicker">Wedding Gift</p>
-          <h2 className="luxury-section-title mt-3 text-foreground">For those who wish to celebrate with a thoughtful digital gift.</h2>
+          {/* ✅ Kicker emas untuk memberi konteks section */}
+          <p className="luxury-kicker text-[#D4AF37]">Wedding Gift</p>
+          
+          {/* ✅ Judul dibuat sangat pendek agar Serif raksasanya terlihat elegan */}
+          <h2 className="luxury-section-title mt-3 text-foreground">A Token of Love</h2>
+          
+          {/* ✅ Kalimat panjang dipindah ke tag <p> dengan text-muted-foreground (abu-abu pudar) dan ukuran wajar */}
+          <p className="luxury-copy mt-4 text-muted-foreground">
+            Your presence is our greatest joy. Should you wish to bless us further, a digital token is deeply appreciated.
+          </p>
         </motion.div>
 
         {/* Grid Layout: 2 Kolom untuk BCA & Mandiri */}

@@ -126,7 +126,17 @@ export default function HomePage() {
   }
 
   const scrollToDetails = () => {
-    detailsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    if (!detailsRef.current) return
+    
+    // Menghitung posisi elemen dengan presisi tanpa memaksa GPU
+    const elementPosition = detailsRef.current.getBoundingClientRect().top
+    const offsetPosition = elementPosition + window.scrollY
+  
+    // Menggunakan window.scrollTo yang jauh lebih stabil dan mulus
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    })
   }
   return (
     // FIX IOS STUCK 1: Ganti 'overflow-x-hidden' menjadi 'w-full overflow-clip' 
@@ -147,48 +157,49 @@ export default function HomePage() {
           <div className="absolute inset-0 z-1 bg-[linear-gradient(180deg,rgba(54,40,32,0.12)_0%,rgba(54,40,32,0.58)_58%,rgba(24,18,14,0.98)_100%)]" />
           
           <motion.div
-            // Menambahkan scale agar ada efek kedalaman (depth)
             initial={{ opacity: 0, y: 30, scale: 0.95 }}
             animate={showOverlay ? { opacity: 0, y: 30, scale: 0.95 } : { opacity: 1, y: 0, scale: 1 }}
-            // Menggunakan custom bezier [0.25, 1, 0.5, 1] untuk efek berhenti perlahan (Deceleration)
             transition={{ duration: 1.4, delay: 0.4, ease: [0.25, 1, 0.5, 1] }}
             className="invitation-shell relative z-10 mx-auto grid w-full max-w-6xl gap-8 overflow-hidden rounded-[2rem] border border-white/35 bg-[hsl(var(--background)/0.18)] p-6 shadow-[0_30px_100px_rgba(70,49,35,0.22)] backdrop-blur-md md:p-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end"
           >
-            <div className="space-y-5 text-primary-foreground">
-                {/* Bumbu 1: Bismillah kecil elegan di atas untuk sentuhan sakral */}
-                <div className="soft-reveal text-white/70 font-serif text-lg tracking-widest">
-                  بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم
-                </div>
+            {/* ✅ TAMBAHAN: Subtle Romantic Glow di belakang teks agar terasa hangat */}
+            <div className="absolute inset-0 z-[-1] pointer-events-none bg-[radial-gradient(circle_at_30%_50%,rgba(212,175,55,0.12)_0%,transparent_60%)]" />
 
-                <span className="inline-flex w-fit items-center rounded-full border border-white/30 bg-white/10 px-4 py-2 text-[0.65rem] font-medium uppercase tracking-[0.32em] text-white/85 backdrop-blur-md soft-reveal">
-                  The wedding of Arin & Hisyam
-                </span>
+            {/* KONTEN KIRI: Teks & Tombol */}
+            <div className="space-y-5 text-primary-foreground relative z-10">
+              <div className="soft-reveal text-white/70 font-serif text-lg tracking-widest">
+                بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم
+              </div>
+
+              <span className="inline-flex w-fit items-center rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-4 py-2 text-[0.65rem] font-medium uppercase tracking-[0.32em] text-[#D4AF37] backdrop-blur-md soft-reveal">
+                The wedding of Arin & Hisyam
+              </span>
+              
+              <div className="space-y-2 soft-reveal">
+                <p className="font-script text-4xl md:text-5xl text-[#D4AF37] capitalize tracking-normal mb-1">
+                  A Celebration Of Love
+                </p>
+                {/* ✅ FIX: Tambahkan 'w-fit' agar lebar kotak ini pas dengan panjang nama */}
+                <h1 className="luxury-title text-white text-3xl md:text-4xl leading-snug flex flex-col w-fit">
+                  <span>Imelia Arina Manasikana</span>
+                  {/* ✅ FIX: Tambahkan 'self-center' agar '&' otomatis berada di tengah nama */}
+                  <span className="my-1 font-script text-4xl md:text-5xl text-[#D4AF37] self-center">&</span>
+                  <span>Afif Hisyam Arrasyid</span>
+                </h1>
                 
-                <div className="space-y-2 soft-reveal"> {/* ✅ Menggunakan space-y-2 agar lebih rapat & elegan */}
-                  {/* Bumbu: A Celebration of Love dengan Font Script */}
-                  <p className="font-script text-4xl md:text-5xl text-[#D4AF37] capitalize tracking-normal mb-1">
-                    A Celebration of Love
-                  </p>
-                  
-                  <h1 className="luxury-title text-white text-4xl md:text-5xl leading-tight">
-                    Imelia Arina Manasikana
-                    {/* Simbol '&' emas yang meliuk indah */}
-                    <span className="mx-3 inline-block font-script text-5xl md:text-6xl text-[#D4AF37] align-middle">&</span>
-                    Afif Hisyam Arrasyid
-                  </h1>
-
-                  {/* ✅ TAMBAHAN: Wedding Ring Icon Kecil - Pembeda Utama dengan Website Biasa */}
-                  <div className="flex items-center gap-3 pt-2">
-                    <div className="h-px w-8 bg-[#D4AF37]/40" />
-                    <Heart className="h-4 w-4 text-[#D4AF37] fill-[#D4AF37]/20" />
-                    <div className="h-px w-8 bg-[#D4AF37]/40" />
-                  </div>
+                <div className="flex items-center gap-3 pt-2">
+                  <div className="h-px w-8 bg-[#D4AF37]/40" />
+                  <Heart className="h-4 w-4 text-[#D4AF37] fill-[#D4AF37]/20" />
+                  <div className="h-px w-8 bg-[#D4AF37]/40" />
                 </div>
+              </div>
+              
+              {/* ✅ COPYWRITING DIUBAH KE BAHASA INGGRIS YANG ELEGAN */}
               <p className="luxury-copy max-w-xl text-white/90 font-light leading-relaxed">
-                An intimate celebration wrapped in warm light, soft textures, and heartfelt promises. You are invited to witness the beginning of our forever.
+                With the grace and blessing of Allah SWT, we joyfully invite you to share in our happiness and witness the beginning of our forever.
               </p>
+              
               <div className="flex flex-col gap-3 pt-2 sm:flex-row">
-                {/* ✅ Fungsi onClick diganti ke scrollToDetails, teks diganti 'View Details' */}
                 <button
                   type="button"
                   onClick={scrollToDetails}
@@ -198,12 +209,14 @@ export default function HomePage() {
                 </button>
                 <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-3 text-sm text-white/80 backdrop-blur-md">
                   <Sparkles className="h-4 w-4 text-[hsl(var(--accent))]" />
-                  Sabtu, 30 Mei 2026 · Randudongkal
+                  {/* ✅ TANGGAL DIUBAH KE FORMAT INGGRIS */}
+                  Saturday, May 30, 2026 · Randudongkal
                 </div>
               </div>
             </div>
+
+            {/* KONTEN KANAN: Kotak Nama Tamu & Countdown */}
             <div className="rounded-[1.75rem] border border-white/30 bg-white/12 p-5 text-white backdrop-blur-xl sm:p-6">
-              {/* ✅ FIX: Nama tamu dibuat seperti tulisan tangan kaligrafi di amplop VIP */}
               <p className="text-[0.65rem] uppercase tracking-[0.3em] text-white/50 mb-1">Dear,</p>
               <p className="font-script text-3xl md:text-4xl text-[#D4AF37] tracking-normal">{guestName}</p>
               
@@ -226,7 +239,16 @@ export default function HomePage() {
 
         <motion.section ref={quoteRef} {...fadeUp} className="px-4 py-24 sm:px-6 lg:px-10">
           <div className="invitation-shell mx-auto max-w-4xl rounded-[2rem] border border-white/45 bg-[hsl(var(--card)/0.64)] px-6 py-12 text-center shadow-[0_20px_70px_rgba(100,77,59,0.09)] backdrop-blur-2xl sm:px-10">
-            <Heart className="mx-auto h-8 w-8 text-primary" />
+            {/* ✅ FIX: Menambahkan Elegant Divider untuk mengisi ruang dengan nuansa luxury */}
+            <div className="flex flex-col items-center justify-center">
+              <Heart className="h-8 w-8 text-[#D4AF37] fill-[#D4AF37]/10" />
+              <div className="mt-5 flex items-center gap-3 opacity-70">
+                <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#D4AF37]" />
+                <Sparkles className="h-3 w-3 text-[#D4AF37]" />
+                <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#D4AF37]" />
+              </div>
+            </div>
+            
             <blockquote className="mt-6 font-serif text-2xl leading-relaxed text-foreground sm:text-4xl">
               “{invitationData.quote}”
             </blockquote>
@@ -237,8 +259,12 @@ export default function HomePage() {
         <section className="px-4 py-8 sm:px-6 lg:px-10">
           <div className="invitation-shell mx-auto max-w-6xl">
             <motion.div {...fadeUp} className="mb-8 max-w-2xl">
-              <p className="luxury-kicker">Sang Mempelai</p>
-              <h2 className="luxury-section-title mt-3 text-foreground">Dua jiwa yang dipersatukan dalam satu ikatan suci.</h2>
+              {/* ✅ Kicker dengan warna emas luxury */}
+              <p className="luxury-kicker text-[#D4AF37]">The Bride & Groom</p>
+              {/* ✅ Judul elegan dalam bahasa Inggris */}
+              <h2 className="luxury-section-title mt-3 text-foreground">
+                Two souls beautifully intertwined in a single, sacred journey.
+              </h2>
             </motion.div>
             <div className="grid gap-5 lg:grid-cols-2">
               {coupleCards.map((person, index) => (
@@ -252,7 +278,14 @@ export default function HomePage() {
                     <div className="relative p-6 sm:p-8">
                       <div className={`absolute inset-0 bg-gradient-to-br ${person.accent} opacity-70`} />
                       <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center">
-                        <img src={person.image} alt={person.name} className="h-28 w-28 rounded-[2rem] object-cover shadow-lg" />
+                        {/* ✅ FIX: Efek Floating Parallax sangat halus pada foto mempelai */}
+                        <motion.img 
+                          animate={{ y: [0, -6, 0] }} 
+                          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: index * 1.5 }}
+                          src={person.image} 
+                          alt={person.name} 
+                          className="h-28 w-28 rounded-[2rem] object-cover shadow-[0_10px_30px_rgba(212,175,55,0.15)] border border-[#D4AF37]/20" 
+                        />
                         <div className="space-y-3">
                           <p className="text-xs uppercase tracking-[0.35em] text-primary/70">{person.role}</p>
                           <div>
@@ -283,8 +316,12 @@ export default function HomePage() {
           <div className="invitation-shell mx-auto max-w-6xl space-y-8">
             <motion.div {...fadeUp} className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div>
-                <p className="luxury-kicker">Rangkaian Acara</p>
-                <h2 className="luxury-section-title mt-3 text-foreground">Save the date for our sacred and joyful day.</h2>
+                {/* ✅ Kicker emas */}
+                <p className="luxury-kicker text-[#D4AF37]">Sacred Moments</p>
+                {/* ✅ Judul elegan dalam bahasa Inggris */}
+                <h2 className="luxury-section-title mt-3 text-foreground">
+                  The sacred milestones that mark the beginning of our forever.
+                </h2>
               </div>
               <div className="grid grid-cols-4 gap-2 rounded-[1.75rem] border border-white/45 bg-[hsl(var(--card)/0.72)] p-3 shadow-[0_20px_50px_rgba(89,69,52,0.1)] backdrop-blur-xl">
                 {countdown.map((item) => (

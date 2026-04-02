@@ -345,3 +345,13 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ✅ Memastikan form input memiliki efek glow emas saat diklik (Focus State) */
+input:focus, 
+select:focus, 
+textarea:focus {
+  outline: none !important;
+  border-color: rgba(212, 175, 55, 0.6) !important;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15), inset 0 0 15px rgba(212, 175, 55, 0.05) !important;
+  transition: all 0.3s ease;
+}

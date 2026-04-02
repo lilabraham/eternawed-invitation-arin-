@@ -50,64 +50,77 @@ export function RsvpSection() {
     <section className="px-4 py-24 sm:px-6 lg:px-10">
       <div className="invitation-shell mx-auto max-w-6xl">
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.7 }} className="mb-10 max-w-2xl">
-          {/* ✅ FIX: Warna diubah menjadi emas Luxury (#D4AF37) agar kontras dan terbaca jelas */}
-          <p className="text-sm uppercase tracking-[0.35em] text-[#D4AF37] font-semibold">RSVP & Wishes</p>
-          <h2 className="mt-3 font-serif text-4xl text-foreground sm:text-5xl">Let us know you’ll be there and leave a note we’ll keep close.</h2>
+          
+          {/* ✅ 1. Kicker: Emas Terang dengan Text-Shadow Emas (Boost Kontras) */}
+          <p className="luxury-kicker text-[#E6C35C] font-semibold drop-shadow-[0_1.2px_1.2px_rgba(212,175,55,0.4)]">
+            RSVP & Wishes
+          </p>
+          
+          {/* ✅ 2. Judul: Off-White Terang (text-white/95) dengan Text-Shadow Emas */}
+          <h2 className="luxury-section-title mt-3 text-white/95 drop-shadow-[0_2px_2px_rgba(212,175,55,0.25)]">
+            Be Our Guest
+          </h2> {/* ✅ FIX: Ini sebelumnya tertulis </p>, sekarang sudah benar </h2> */}
+          
+          {/* ✅ 3. Deskripsi: Putih Terang agar mudah dibaca */}
+          <p className="luxury-copy mt-4 text-foreground font-normal leading-relaxed text-white/90">
+            Let us know you’ll be joining us, and kindly leave a heartfelt note we’ll keep close to our hearts.
+          </p>
+          
         </motion.div>
 
         <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
           <div className="rounded-[2rem] border-white/45 bg-[hsl(var(--card)/0.75)] shadow-[0_24px_80px_rgba(88,66,49,0.11)] backdrop-blur-2xl">
             <div className="p-6 sm:p-8">
+              {/* ✅ FIX: Form Labels & Placeholders diganti menjadi bahasa Inggris Editorial yang elegan */}
               <form className="space-y-4" onSubmit={handleSubmit}>
                 <div className="space-y-2">
-                  <p className="text-xs uppercase tracking-[0.3em] text-primary/75">Reserved for your presence</p>
-                  <label className="text-sm text-muted-foreground">Full name</label>
+                  <p className="text-xs uppercase tracking-[0.3em] text-[#D4AF37] font-medium">Reserved for your presence</p>
+                  <label className="text-sm text-muted-foreground">Kindly provide your full name</label>
                   <input 
                     type="text" 
                     value={form.guestName} 
                     onChange={(e) => setForm((prev) => ({ ...prev, guestName: e.target.value }))} 
-                    placeholder="Type your beautiful name" 
-                    className="h-12 w-full px-4 outline-none rounded-2xl bg-[hsl(var(--background)/0.7)]" 
+                    placeholder="e.g., Mr. & Mrs. Anderson" 
+                    className="h-12 w-full px-4 outline-none rounded-2xl bg-[hsl(var(--background)/0.7)] border border-transparent transition-colors focus:border-[#D4AF37]/50" 
                   />
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <label className="text-sm text-muted-foreground">Number of guests</label>
+                    <label className="text-sm text-muted-foreground">Party size</label>
                     <select 
                       value={form.guestCount} 
                       onChange={(e) => setForm((prev) => ({ ...prev, guestCount: e.target.value }))}
-                      className="h-12 w-full px-4 outline-none rounded-2xl bg-[hsl(var(--background)/0.7)]"
+                      className="h-12 w-full px-4 outline-none rounded-2xl bg-[hsl(var(--background)/0.7)] border border-transparent transition-colors focus:border-[#D4AF37]/50"
                     >
-                      <option value="1">1 guest</option>
-                      <option value="2">2 guests</option>
-                      <option value="3">3 guests</option>
-                      <option value="4">4 guests</option>
+                      <option value="1">1 seat reserved</option>
+                      <option value="2">2 seats reserved</option>
+                      <option value="3">3 seats reserved</option>
+                      <option value="4">4 seats reserved</option>
                     </select>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm text-muted-foreground">Attendance status</label>
+                    <label className="text-sm text-muted-foreground">Will you be joining us?</label>
                     <select 
                       value={form.attendanceStatus} 
                       onChange={(e) => setForm((prev) => ({ ...prev, attendanceStatus: e.target.value }))}
-                      className="h-12 w-full px-4 outline-none rounded-2xl bg-[hsl(var(--background)/0.7)]"
+                      className="h-12 w-full px-4 outline-none rounded-2xl bg-[hsl(var(--background)/0.7)] border border-transparent transition-colors focus:border-[#D4AF37]/50"
                     >
-                      <option value="attending">Will attend</option>
-                      <option value="maybe">Maybe</option>
-                      <option value="unable">Can’t attend</option>
+                      <option value="attending">Joyfully Accept</option>
+                      <option value="unable">Regretfully Decline</option>
                     </select>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm text-muted-foreground">Your wish</label>
+                  <label className="text-sm text-muted-foreground">Leave a blessing or advice</label>
                   <textarea 
                     value={form.message} 
                     onChange={(e) => setForm((prev) => ({ ...prev, message: e.target.value }))} 
-                    placeholder="Share a warm message for the couple" 
-                    className="min-h-[140px] w-full p-4 outline-none rounded-[1.5rem] bg-[hsl(var(--background)/0.7)]" 
+                    placeholder="Write your warmest wishes here..." 
+                    className="min-h-[140px] w-full p-4 outline-none rounded-[1.5rem] bg-[hsl(var(--background)/0.7)] border border-transparent transition-colors focus:border-[#D4AF37]/50" 
                   />
                 </div>
-                <button type="submit" disabled={createRsvp.isPending} className="h-12 w-full rounded-full bg-primary text-primary-foreground active:scale-95 transition-transform">
-                  {createRsvp.isPending ? 'Sending...' : 'Send RSVP'}
+                <button type="submit" disabled={createRsvp.isPending} className="h-12 w-full rounded-full bg-primary text-primary-foreground active:scale-95 transition-transform hover:shadow-[0_0_20px_rgba(212,175,55,0.3)]">
+                  {createRsvp.isPending ? 'Sending your regards...' : 'Confirm Attendance'}
                 </button>
               </form>
             </div>
