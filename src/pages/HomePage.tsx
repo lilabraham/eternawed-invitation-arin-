@@ -62,6 +62,45 @@ const Stardust = () => {
 }
 // --- AKHIR KOMPONEN STARDUST ---
 
+// ✅ FIX: DEFINISI FLOATING PETALS HARUS DI LUAR HOMEPAGE
+// --- KOMPONEN EFEK LUXURY: FALLING PETALS ---
+const FloatingPetals = () => {
+  const petals = useMemo(() => {
+    return Array.from({ length: 15 }).map((_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      delay: Math.random() * 15,
+      duration: Math.random() * 20 + 25, // Sangat lambat (25-45 detik)
+      scale: Math.random() * 0.4 + 0.3,
+      opacity: Math.random() * 0.15 + 0.05, // Sangat tipis (maks 20%)
+    }))
+  }, [])
+
+  return (
+    <div className="fixed inset-0 z-[25] pointer-events-none touch-none overflow-hidden">
+      {petals.map((p) => (
+        <motion.div
+          key={p.id}
+          className="absolute text-[#D4AF37]"
+          style={{ left: `${p.x}vw`, top: '-10vh', opacity: p.opacity, transform: `scale(${p.scale})` }}
+          animate={{
+            y: ['0vh', '110vh'],
+            x: [0, Math.random() * 100 - 50, Math.random() * 100 - 50],
+            rotate: [0, 180, 360],
+          }}
+          transition={{ duration: p.duration, repeat: Infinity, ease: 'linear', delay: p.delay }}
+        >
+          {/* SVG Kelopak Bunga Minimalis */}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 0C12 0 24 6 24 12C24 18 12 24 12 24C12 24 0 18 0 12C0 6 12 0 12 0Z" />
+          </svg>
+        </motion.div>
+      ))}
+    </div>
+  )
+}
+// --- AKHIR KOMPONEN PETALS ---
+
 export default function HomePage() {
   const quoteRef = useRef<HTMLElement | null>(null)
   const detailsRef = useRef<HTMLElement | null>(null)
@@ -144,6 +183,8 @@ export default function HomePage() {
     <div className="mesh-background relative min-h-screen w-full overflow-clip text-foreground">
       
       <Stardust />
+      {/* ✅ PANGGIL KOMPONEN PETALS DI SINI */}
+      <FloatingPetals />
 
       <main className="relative z-10">
         {/* FIX IOS STUCK 2: Ganti min-h-screen menjadi min-h-[100dvh] */}
