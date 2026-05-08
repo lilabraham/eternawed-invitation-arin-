@@ -24,8 +24,8 @@ export const invitationData = {
 export const events = [
   {
     title: 'Akad Nikah & Resepsi',
-    dateLabel: '30 & 31 Mei 2026',
-    timeLabel: 'Akad (Sabtu): 09.00 WIB | Resepsi (Minggu): 13.00 WIB',
+    dateLabel: '31 Mei & 1 Juni 2026',
+    timeLabel: 'Akad (Minggu): 09.00 WIB | Resepsi (Senin): 09.00 WIB',
     venue: 'Kediaman Mempelai Wanita',
     address: 'Jl. Lkr. Utara No.02, Dusun I, Randudongkal, Kec. Randudongkal, Kabupaten Pemalang, Jawa Tengah 52353 (Masuk gang Yuna Print)',
     mapsUrl: 'https://www.google.com/maps?q=-7.096988037704065,109.32443035659291', // Sesuai alamat Pemalang
@@ -33,7 +33,7 @@ export const events = [
   },
   {
     title: 'Ngunduh Mantu',
-    dateLabel: 'Kamis, 4 Juni 2026',
+    dateLabel: '5 & 6 Juni 2026',
     timeLabel: '09.00 WIB - Selesai',
     venue: 'Kediaman Mempelai Pria',
     address: 'Jl. Tlangu Tengah, Tlangu, Sukorejo, Kec. Sukorejo, Kabupaten Kendal, Jawa Tengah 51363',

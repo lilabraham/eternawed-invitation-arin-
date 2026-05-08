@@ -1,8 +1,10 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Sparkles } from 'lucide-react'
 
+// Memastikan guestName bisa opsional jika tidak ada kiriman dari induk
 type OnboardingOverlayProps = {
-  guestName: string
+  guestName?: string 
   onOpenInvitation: () => void
 }
 
@@ -16,7 +18,21 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
 }
 
-export function OnboardingOverlay({ guestName, onOpenInvitation }: OnboardingOverlayProps) {
+export function OnboardingOverlay({ guestName = 'Tamu Spesial', onOpenInvitation }: OnboardingOverlayProps) {
+  // 1. Buat state internal untuk menyimpan nama yang akan ditampilkan
+  const [displayName, setDisplayName] = useState(guestName)
+
+  // 2. Gunakan useEffect untuk membaca URL saat layar ini pertama kali dirender
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const nameFromUrl = params.get('to')
+    
+    if (nameFromUrl) {
+      // Jika ada parameter ?to=, gunakan nama tersebut
+      setDisplayName(nameFromUrl)
+    }
+  }, [])
+
   return (
     <motion.div
       variants={containerVariants}
@@ -40,7 +56,8 @@ export function OnboardingOverlay({ guestName, onOpenInvitation }: OnboardingOve
 
         <motion.div variants={itemVariants} className="text-center text-white">
           <p className="text-sm uppercase tracking-[0.32em] text-white/70">Reserved with love for</p>
-          <p className="mt-3 font-serif text-3xl text-white sm:text-4xl">{guestName}</p>
+          {/* 3. Tampilkan displayName di sini */}
+          <p className="mt-3 font-serif text-3xl text-white sm:text-4xl">{displayName}</p>
         </motion.div>
 
         <motion.div variants={itemVariants} className="flex justify-center">

@@ -1,8 +1,7 @@
-import { FormEvent, useMemo, useState } from 'react'
+import { FormEvent, useMemo, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { useCreateRsvpEntry, useRsvpEntries } from '@/hooks/useInvitationData'
 
-// --- KOMPONEN EFEK LUXURY: GOLDEN ROSE CORNER ---
+// --- KOMPONEN EFEK LUXURY: GOLDEN ROSE CORNER (TIDAK DIUBAH) ---
 const CornerRose = ({ className = "" }) => (
   <svg className={`absolute pointer-events-none ${className}`} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M100 100C100 100 80 85 70 60C60 35 30 20 30 20C30 20 50 35 60 55C70 75 100 100 100 100Z" fill="url(#gold-grad-rsvp)" fillOpacity="0.12"/>
@@ -25,15 +24,51 @@ const marquee = {
   transition: { duration: 24, repeat: Infinity, ease: 'linear' as const },
 }
 
+// Tipe data untuk Guest Book
+type Wish = {
+  id: string | number;
+  guestName: string;
+  attendanceStatus: string;
+  message: string;
+}
+
+// TODO: Ganti URL ini dengan URL Web App Google Apps Script Anda nanti
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydLZdHofCJeSDDTldP8QPcn7-a2Yv4kpfsMzSN72KYyzqB9DtCRySy6-3hFPeM0BIx/exec';
+
 export function RsvpSection() {
-  const { data: wishes = [], isLoading } = useRsvpEntries()
-  const createRsvp = useCreateRsvpEntry()
+  // Mengganti Blink Hooks dengan React State bawaan
+  const [wishes, setWishes] = useState<Wish[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   const [form, setForm] = useState({
     guestName: '',
     guestCount: '1',
     attendanceStatus: 'attending',
     message: '',
   })
+
+  // Mengambil data dari Google Sheets saat komponen dimuat
+  useEffect(() => {
+    const fetchWishes = async () => {
+      try {
+        const response = await fetch(GOOGLE_SCRIPT_URL);
+        const data = await response.json();
+        setWishes(data);
+      } catch (error) {
+        console.error("Gagal mengambil data dari Google Sheets", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    // Jangan lakukan fetch jika URL belum diganti (masih default)
+    if (GOOGLE_SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbydLZdHofCJeSDDTldP8QPcn7-a2Yv4kpfsMzSN72KYyzqB9DtCRySy6-3hFPeM0BIx/exec') {
+      fetchWishes();
+    } else {
+      setIsLoading(false); 
+    }
+  }, [])
 
   const marqueeItems = useMemo(() => {
     if (wishes.length === 0) return []
@@ -47,17 +82,37 @@ export function RsvpSection() {
       return
     }
 
+    setIsSubmitting(true)
+
     try {
-      await createRsvp.mutateAsync({
+      // Mengubah data form menjadi FormData agar mudah diterima Google Script (menghindari CORS)
+      const formData = new FormData();
+      formData.append('guestName', form.guestName.trim());
+      formData.append('guestCount', form.guestCount);
+      formData.append('attendanceStatus', form.attendanceStatus);
+      formData.append('message', form.message.trim());
+
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors' // Wajib menggunakan no-cors untuk Google Apps Script
+      });
+
+      // Update UI Guest Book secara instan tanpa harus refresh halaman
+      const newWish: Wish = {
+        id: Date.now(),
         guestName: form.guestName.trim(),
-        guestCount: form.guestCount,
         attendanceStatus: form.attendanceStatus,
-        message: form.message.trim(),
-      })
+        message: form.message.trim()
+      };
+      setWishes((prev) => [newWish, ...prev]);
+
       setForm({ guestName: '', guestCount: '1', attendanceStatus: 'attending', message: '' })
       alert('RSVP sent\nThank you for sharing your presence and wishes.')
     } catch {
-      alert('Could not send RSVP')
+      alert('Could not send RSVP. Please check your connection.')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -81,7 +136,7 @@ export function RsvpSection() {
         </motion.div>
 
         <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
-          {/* ✅ KARTU KIRI: FORM RSVP (Diberi mawar di sudut kiri bawah) */}
+          {/* ✅ KARTU KIRI: FORM RSVP */}
           <div className="relative overflow-hidden rounded-[2rem] border-white/45 bg-[hsl(var(--card)/0.75)] shadow-[0_24px_80px_rgba(88,66,49,0.11)] backdrop-blur-2xl">
             <CornerRose className="-bottom-6 -left-6 w-56 h-56 opacity-50 scale-x-[-1]" />
             
@@ -133,14 +188,14 @@ export function RsvpSection() {
                     className="min-h-[140px] w-full p-4 outline-none rounded-[1.5rem] bg-black/30 border border-white/10 transition-colors focus:border-[#D4AF37]/60 text-white placeholder:text-white/30" 
                   />
                 </div>
-                <button type="submit" disabled={createRsvp.isPending} className="h-12 w-full rounded-full bg-[#D4AF37] text-black font-semibold active:scale-95 transition-transform hover:shadow-[0_0_25px_rgba(212,175,55,0.4)]">
-                  {createRsvp.isPending ? 'Sending your regards...' : 'Confirm Attendance'}
+                <button type="submit" disabled={isSubmitting} className="h-12 w-full rounded-full bg-[#D4AF37] text-black font-semibold active:scale-95 transition-transform hover:shadow-[0_0_25px_rgba(212,175,55,0.4)] disabled:opacity-70 disabled:active:scale-100">
+                  {isSubmitting ? 'Sending your regards...' : 'Confirm Attendance'}
                 </button>
               </form>
             </div>
           </div>
 
-          {/* ✅ KARTU KANAN: GUEST BOOK (Diberi mawar di sudut kanan bawah) */}
+          {/* ✅ KARTU KANAN: GUEST BOOK */}
           <div className="relative overflow-hidden rounded-[2rem] border-white/45 bg-[hsl(var(--card)/0.72)] shadow-[0_24px_80px_rgba(88,66,49,0.11)] backdrop-blur-2xl">
             <CornerRose className="-bottom-6 -right-6 w-56 h-56 opacity-50" />
             

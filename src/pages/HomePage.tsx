@@ -251,7 +251,7 @@ export default function HomePage() {
                 <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-3 text-sm text-white/80 backdrop-blur-md">
                   <Sparkles className="h-4 w-4 text-[hsl(var(--accent))]" />
                   {/* ✅ TANGGAL DIUBAH KE FORMAT INGGRIS */}
-                  Saturday, May 30, 2026 · Randudongkal
+                  Sunday, May 31, 2026 · Randudongkal
                 </div>
               </div>
             </div>
@@ -428,7 +428,7 @@ export default function HomePage() {
               <div className="space-y-1 pt-4">
                 <p className="text-sm uppercase tracking-[0.25em] text-muted-foreground">Kami yang berbahagia,</p>
                 <p className="font-serif text-2xl italic text-foreground">
-                  Keluarga Besar Arin & Hisyam
+                  Keluarga Besar Arin & Afif
                 </p>
               </div>
             </div>
