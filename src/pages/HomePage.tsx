@@ -213,7 +213,7 @@ export default function HomePage() {
               </div>
 
               <span className="inline-flex w-fit items-center rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-4 py-2 text-[0.65rem] font-medium uppercase tracking-[0.32em] text-[#D4AF37] backdrop-blur-md soft-reveal">
-                The wedding of Arin & Hisyam
+                The wedding of Arin & Afif
               </span>
               
               <div className="space-y-2 soft-reveal">
@@ -225,7 +225,7 @@ export default function HomePage() {
                   <span>Imelia Arina Manasikana</span>
                   {/* ✅ FIX: Tambahkan 'self-center' agar '&' otomatis berada di tengah nama */}
                   <span className="my-1 font-script text-4xl md:text-5xl text-[#D4AF37] self-center">&</span>
-                  <span>Afif Hisyam Arrasyid</span>
+                  <span>Afif Hisyam Arrasyid S.Kom</span>
                 </h1>
                 
                 <div className="flex items-center gap-3 pt-2">
@@ -442,9 +442,9 @@ export default function HomePage() {
         <section className="pb-24 pt-10 text-center">
           <motion.div {...fadeUp} viewport={{ once: true, amount: 0.5 }}>
             {/* "Imelia & Afif" menggunakan emas #D4AF37/70 agar kontras dan mewah */}
-            <p className="font-script text-4xl md:text-5xl text-[#D4AF37]/70">Arin & Hisyam</p>
+            <p className="font-script text-4xl md:text-5xl text-[#D4AF37]/70">Arin & Afif</p>
             {/* ✅ "Forever Begins..." diganti dari putih menjadi emas transparan #D4AF37/70 agar kontras di area terang */}
-            <p className="mt-4 text-[0.65rem] uppercase tracking-[0.4em] text-[#D4AF37]/70">Forever Begins • 30 Mei 2026</p>
+            <p className="mt-4 text-[0.65rem] uppercase tracking-[0.4em] text-[#D4AF37]/70">Forever Begins • 31 Mei 2026</p>
           </motion.div>
         </section>
 
