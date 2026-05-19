@@ -59,7 +59,7 @@ const Preloader = () => {
           The Wedding of
         </p>
         <p className="font-serif text-xl italic tracking-widest text-[#D4AF37]/90">
-          Arin & Hisyam
+          Arin & Afif
         </p>
       </motion.div>
     </motion.div>
