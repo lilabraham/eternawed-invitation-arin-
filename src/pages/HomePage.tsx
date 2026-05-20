@@ -13,11 +13,10 @@ const fadeUp = {
   initial: { opacity: 0, y: 32 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, amount: 0.1 }, 
-  // FIX TS ERROR: Tambahkan 'as const' agar TypeScript tidak marah
   transition: { duration: 0.6, ease: "easeOut" as const } 
 }
 
-// --- KOMPONEN EFEK LUXURY: GOLDEN STARDUST (DI DEPAN LAYAR) ---
+// --- KOMPONEN EFEK LUXURY: GOLDEN STARDUST ---
 const Stardust = () => {
   const particles = useMemo(() => {
     return Array.from({ length: 45 }).map((_, i) => ({
@@ -32,7 +31,6 @@ const Stardust = () => {
   }, [])
 
   return (
-    // FIX IOS: Tambahkan 'touch-none' agar partikel tidak menangkap sentuhan jari
     <div className="fixed inset-0 z-[30] pointer-events-none touch-none overflow-hidden">
       {particles.map((p) => (
         <motion.div
@@ -60,9 +58,7 @@ const Stardust = () => {
     </div>
   )
 }
-// --- AKHIR KOMPONEN STARDUST ---
 
-// ✅ FIX: DEFINISI FLOATING PETALS HARUS DI LUAR HOMEPAGE
 // --- KOMPONEN EFEK LUXURY: FALLING PETALS ---
 const FloatingPetals = () => {
   const petals = useMemo(() => {
@@ -70,9 +66,9 @@ const FloatingPetals = () => {
       id: i,
       x: Math.random() * 100,
       delay: Math.random() * 15,
-      duration: Math.random() * 20 + 25, // Sangat lambat (25-45 detik)
+      duration: Math.random() * 20 + 25,
       scale: Math.random() * 0.4 + 0.3,
-      opacity: Math.random() * 0.15 + 0.05, // Sangat tipis (maks 20%)
+      opacity: Math.random() * 0.15 + 0.05,
     }))
   }, [])
 
@@ -90,7 +86,6 @@ const FloatingPetals = () => {
           }}
           transition={{ duration: p.duration, repeat: Infinity, ease: 'linear', delay: p.delay }}
         >
-          {/* SVG Kelopak Bunga Minimalis */}
           <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 0C12 0 24 6 24 12C24 18 12 24 12 24C12 24 0 18 0 12C0 6 12 0 12 0Z" />
           </svg>
@@ -99,7 +94,100 @@ const FloatingPetals = () => {
     </div>
   )
 }
-// --- AKHIR KOMPONEN PETALS ---
+
+// --- KOMPONEN EFEK LUXURY: CORNER ROSE ---
+const CornerRose = ({ className = "" }) => (
+  <svg className={`pointer-events-none ${className}`} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M100 100C100 100 80 85 70 60C60 35 30 20 30 20C30 20 50 35 60 55C70 75 100 100 100 100Z" fill="url(#gold-grad-event)" fillOpacity="0.15"/>
+    <path d="M100 80C100 80 75 70 55 45C35 20 10 10 10 10C10 10 35 25 50 50C65 75 100 80 100 80Z" fill="url(#gold-grad-event)" fillOpacity="0.1"/>
+    <path d="M80 100C80 100 70 75 45 55C20 35 10 10 10 10C10 10 25 35 50 50C75 65 80 100 80 100Z" fill="url(#gold-grad-event)" fillOpacity="0.1"/>
+    <path d="M95 95C95 95 85 80 75 65" stroke="#D4AF37" strokeWidth="0.5" strokeOpacity="0.4"/>
+    <path d="M85 95C85 95 70 85 55 65" stroke="#D4AF37" strokeWidth="0.5" strokeOpacity="0.4"/>
+    <path d="M95 85C95 85 85 70 65 55" stroke="#D4AF37" strokeWidth="0.5" strokeOpacity="0.4"/>
+    <defs>
+      <linearGradient id="gold-grad-event" x1="100" y1="100" x2="0" y2="0" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#D4AF37"/>
+        <stop offset="1" stopColor="#D4AF37" stopOpacity="0"/>
+      </linearGradient>
+    </defs>
+  </svg>
+)
+
+// --- KOMPONEN EFEK LUXURY: FINE-LINE FLORAL CORNER ---
+const FloralCorner = ({ className = "" }) => (
+  <svg 
+    className={`pointer-events-none ${className}`} 
+    viewBox="0 0 200 200" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g stroke="currentColor" strokeWidth="0.75" strokeOpacity="0.35" fill="none" strokeLinecap="round">
+      <path d="M0,0 C60,0 120,40 150,100 C180,160 190,200 190,200" />
+      <path d="M20,0 C70,20 100,70 110,130" />
+      <path d="M0,20 C20,70 70,100 130,110" />
+      <path d="M50,15 C70,10 90,25 85,45 C65,50 45,35 50,15 Z" />
+      <path d="M15,50 C10,70 25,90 45,85 C50,65 35,45 15,50 Z" />
+      <path d="M100,50 C120,45 135,60 130,80 C110,85 95,70 100,50 Z" />
+      <path d="M50,100 C45,120 60,135 80,130 C85,110 70,95 50,100 Z" />
+    </g>
+  </svg>
+)
+
+// ✅ KOMPONEN CORE BARU: EDITORIAL TITLE CREST (DENGAN TEMA LIGHT/DARK)
+const SectionHeader = ({ 
+  kicker, 
+  title, 
+  subtitle, 
+  icon: Icon = Sparkles,
+  theme = 'dark' // Default selalu dark, kecuali kita tentukan lain
+}: { 
+  kicker: string; 
+  title: string | React.ReactNode; 
+  subtitle: string | React.ReactNode; 
+  icon?: React.ElementType;
+  theme?: 'dark' | 'light';
+}) => {
+  const isDark = theme === 'dark';
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="relative flex flex-col items-center justify-center text-center mx-auto max-w-2xl mb-16"
+    >
+      {/* Ambient Glow hanya menyala di tema gelap, di tema terang dimatikan agar bersih */}
+      {isDark && (
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-32 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.06)_0%,transparent_70%)] pointer-events-none mix-blend-screen blur-xl" />
+      )}
+
+      {/* Garis & Ikon */}
+      <div className="flex flex-col items-center gap-3 mb-6">
+        <div className={`h-10 w-px bg-gradient-to-b ${isDark ? 'from-transparent to-[#D4AF37]/50' : 'from-transparent to-[#b59535]/60'}`} />
+        <Icon className={`h-4 w-4 ${isDark ? 'text-[#D4AF37] opacity-90 drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]' : 'text-[#b59535]'}`} />
+      </div>
+
+      {/* Eyebrow / Kicker */}
+      <p className={`text-[0.65rem] uppercase tracking-[0.45em] mb-5 font-semibold ${isDark ? 'text-[#D4AF37]' : 'text-[#b59535]'}`}>
+        {kicker}
+      </p>
+
+      {/* Main Title (Putih untuk Dark, Espresso Charcoal untuk Light) */}
+      <h2 className={`font-serif text-4xl sm:text-5xl lg:text-6xl mb-6 leading-tight ${isDark ? 'text-white drop-shadow-md' : 'text-[#2A2421]'}`}>
+        {title}
+      </h2>
+
+      {/* Subtitle */}
+      <p className={`text-sm leading-relaxed font-light px-4 ${isDark ? 'text-white/60' : 'text-[#2A2421]/70'}`}>
+        {subtitle}
+      </p>
+
+      {/* Garis Penutup Bawah */}
+      <div className={`mt-10 h-px w-24 bg-gradient-to-r ${isDark ? 'from-transparent via-[#D4AF37]/25 to-transparent' : 'from-transparent via-[#b59535]/40 to-transparent'}`} />
+    </motion.div>
+  );
+};
 
 export default function HomePage() {
   const quoteRef = useRef<HTMLElement | null>(null)
@@ -110,11 +198,6 @@ export default function HomePage() {
   const [isPlaying, setIsPlaying] = useState(false)
   const countdown = useCountdown(invitationData.weddingDateIso)
   
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ['start 80%', 'end 35%'],
-  })
-
   const guestName = useMemo(() => {
     if (typeof window === 'undefined') return 'Our Dearest Guest'
     const guestParam = new URLSearchParams(window.location.search).get('to')
@@ -132,13 +215,11 @@ export default function HomePage() {
 
   const toggleMusic = async () => {
     if (!audioRef.current) return
-
     if (isPlaying) {
       audioRef.current.pause()
       setIsPlaying(false)
       return
     }
-
     try {
       await audioRef.current.play()
       setIsPlaying(true)
@@ -148,10 +229,7 @@ export default function HomePage() {
   }
 
  const handleOpenInvitation = () => {
-    // 1. Memicu animasi keluar (exit) overlay secara instan
     setShowOverlay(false)
-
-    // 2. Memberikan jeda 600ms sebelum memutar musik agar CPU ponsel tidak kaget (menghilangkan efek "deg")
     window.setTimeout(async () => {
       if (!isPlaying && audioRef.current) {
         try {
@@ -161,34 +239,26 @@ export default function HomePage() {
           setIsPlaying(false)
         }
       }
-    }, 600) // Musik mulai mengalun saat tirai sudah setengah terbuka
+    }, 600) 
   }
 
   const scrollToDetails = () => {
     if (!detailsRef.current) return
-    
-    // Menghitung posisi elemen dengan presisi tanpa memaksa GPU
     const elementPosition = detailsRef.current.getBoundingClientRect().top
     const offsetPosition = elementPosition + window.scrollY
-  
-    // Menggunakan window.scrollTo yang jauh lebih stabil dan mulus
     window.scrollTo({
       top: offsetPosition,
       behavior: 'smooth'
     })
   }
+
   return (
-    // FIX IOS STUCK 1: Ganti 'overflow-x-hidden' menjadi 'w-full overflow-clip' 
-    // Ini mencegah error stuck momentum scroll di iPhone
     <div className="mesh-background relative min-h-screen w-full overflow-clip text-foreground">
       
       <Stardust />
-      {/* ✅ PANGGIL KOMPONEN PETALS DI SINI */}
       <FloatingPetals />
 
       <main className="relative z-10">
-        {/* FIX IOS STUCK 2: Ganti min-h-screen menjadi min-h-[100dvh] */}
-        {/* dvh (Dynamic Viewport Height) mencegah layar meloncat saat address bar Safari hilang/muncul */}
         <section className="relative flex min-h-[100dvh] items-end overflow-hidden px-4 pb-10 pt-8 sm:px-6 lg:px-10 lg:pb-12">
           <img
             src={invitationData.heroImage}
@@ -203,10 +273,9 @@ export default function HomePage() {
             transition={{ duration: 1.4, delay: 0.4, ease: [0.25, 1, 0.5, 1] }}
             className="invitation-shell relative z-10 mx-auto grid w-full max-w-6xl gap-8 overflow-hidden rounded-[2rem] border border-white/35 bg-[hsl(var(--background)/0.18)] p-6 shadow-[0_30px_100px_rgba(70,49,35,0.22)] backdrop-blur-md md:p-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end"
           >
-            {/* ✅ TAMBAHAN: Subtle Romantic Glow di belakang teks agar terasa hangat */}
-            <div className="absolute inset-0 z-[-1] pointer-events-none bg-[radial-gradient(circle_at_30%_50%,rgba(212,175,55,0.12)_0%,transparent_60%)]" />
+            <div className="absolute inset-0 z-[-1] pointer-events-none bg-[radial-gradient(circle_at_30%_50%,rgba(212,175,55,0.12)_0%,transparent_70%)]" />
 
-            {/* KONTEN KIRI: Teks & Tombol */}
+            {/* KONTEN KIRI */}
             <div className="space-y-5 text-primary-foreground relative z-10">
               <div className="soft-reveal text-white/70 font-serif text-lg tracking-widest">
                 بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم
@@ -216,26 +285,26 @@ export default function HomePage() {
                 The wedding of Arin & Afif
               </span>
               
-              <div className="space-y-2 soft-reveal">
+              <div className="space-y-3 soft-reveal">
                 <p className="font-script text-4xl md:text-5xl text-[#D4AF37] capitalize tracking-normal mb-1">
                   A Celebration Of Love
                 </p>
-                {/* ✅ FIX: Tambahkan 'w-fit' agar lebar kotak ini pas dengan panjang nama */}
-                <h1 className="luxury-title text-white text-3xl md:text-4xl leading-snug flex flex-col w-fit">
-                  <span>Imelia Arina Manasikana</span>
-                  {/* ✅ FIX: Tambahkan 'self-center' agar '&' otomatis berada di tengah nama */}
-                  <span className="my-1 font-script text-4xl md:text-5xl text-[#D4AF37] self-center">&</span>
-                  <span>Afif Hisyam Arrasyid S.Kom</span>
-                </h1>
                 
-                <div className="flex items-center gap-3 pt-2">
-                  <div className="h-px w-8 bg-[#D4AF37]/40" />
-                  <Heart className="h-4 w-4 text-[#D4AF37] fill-[#D4AF37]/20" />
-                  <div className="h-px w-8 bg-[#D4AF37]/40" />
+                <div className="flex flex-col w-fit">
+                  <h1 className="luxury-title text-white text-3xl md:text-4xl leading-snug flex flex-col text-center sm:text-left">
+                    <span>Imelia Arina Manasikana</span>
+                    <span className="my-2 font-script text-4xl md:text-5xl text-[#D4AF37] self-center">&</span>
+                    <span>Afif Hisyam Arrasyid S.Kom</span>
+                  </h1>
+                  
+                  <div className="flex items-center justify-center gap-3 pt-5 pb-2">
+                    <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#D4AF37]/60" />
+                    <Heart className="h-4 w-4 text-[#D4AF37] fill-[#D4AF37]/20" />
+                    <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#D4AF37]/60" />
+                  </div>
                 </div>
               </div>
               
-              {/* ✅ COPYWRITING DIUBAH KE BAHASA INGGRIS YANG ELEGAN */}
               <p className="luxury-copy max-w-xl text-white/90 font-light leading-relaxed">
                 With the grace and blessing of Allah SWT, we joyfully invite you to share in our happiness and witness the beginning of our forever.
               </p>
@@ -248,15 +317,14 @@ export default function HomePage() {
                 >
                   View Details
                 </button>
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-3 text-sm text-white/80 backdrop-blur-md">
-                  <Sparkles className="h-4 w-4 text-[hsl(var(--accent))]" />
-                  {/* ✅ TANGGAL DIUBAH KE FORMAT INGGRIS */}
-                  Sunday, May 31, 2026 · Randudongkal
+                <div className="inline-flex items-center gap-2.5 rounded-full border border-[#D4AF37]/40 bg-[#D4AF37]/10 px-5 py-3 text-sm font-medium tracking-wide text-[#D4AF37] shadow-[0_0_20px_rgba(212,175,55,0.15)] backdrop-blur-md">
+                  <Sparkles className="h-4 w-4" />
+                  Monday, June 1, 2026 • Randudongkal
                 </div>
               </div>
             </div>
 
-            {/* KONTEN KANAN: Kotak Nama Tamu & Countdown */}
+            {/* KONTEN KANAN */}
             <div className="rounded-[1.75rem] border border-white/30 bg-white/12 p-5 text-white backdrop-blur-xl sm:p-6">
               <p className="text-[0.65rem] uppercase tracking-[0.3em] text-white/50 mb-1">Dear,</p>
               <p className="font-script text-3xl md:text-4xl text-[#D4AF37] tracking-normal">{guestName}</p>
@@ -265,11 +333,18 @@ export default function HomePage() {
                 <div>
                   <p className="text-sm text-white/70">Join us in a day of vows, blessings, and a beautifully slow celebration.</p>
                 </div>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-4">
                   {countdown.slice(0, 2).map((item) => (
-                    <div key={item.label} className="rounded-2xl border border-white/20 bg-black/10 p-4">
-                      <p className="text-3xl font-semibold">{String(item.value).padStart(2, '0')}</p>
-                      <p className="mt-1 text-xs uppercase tracking-[0.28em] text-white/60">{item.label}</p>
+                    <div key={item.label} className="relative overflow-hidden rounded-2xl border border-[#D4AF37]/20 bg-gradient-to-br from-white/[0.08] to-transparent p-4 shadow-[0_8px_32px_rgba(0,0,0,0.2)] backdrop-blur-xl">
+                      <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/10 to-transparent opacity-60" />
+                      <div className="relative z-10 flex flex-col items-center">
+                        <p className="font-serif text-4xl text-[#D4AF37] drop-shadow-md">
+                          {String(item.value).padStart(2, '0')}
+                        </p>
+                        <p className="mt-2 text-[0.65rem] uppercase tracking-[0.35em] text-white/80">
+                          {item.label}
+                        </p>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -280,7 +355,6 @@ export default function HomePage() {
 
         <motion.section ref={quoteRef} {...fadeUp} className="px-4 py-24 sm:px-6 lg:px-10">
           <div className="invitation-shell mx-auto max-w-4xl rounded-[2rem] border border-white/45 bg-[hsl(var(--card)/0.64)] px-6 py-12 text-center shadow-[0_20px_70px_rgba(100,77,59,0.09)] backdrop-blur-2xl sm:px-10">
-            {/* ✅ FIX: Menambahkan Elegant Divider untuk mengisi ruang dengan nuansa luxury */}
             <div className="flex flex-col items-center justify-center">
               <Heart className="h-8 w-8 text-[#D4AF37] fill-[#D4AF37]/10" />
               <div className="mt-5 flex items-center gap-3 opacity-70">
@@ -297,116 +371,281 @@ export default function HomePage() {
           </div>
         </motion.section>
 
-        <section className="px-4 py-8 sm:px-6 lg:px-10">
+        {/* ── SECTION: THE BRIDE & GROOM ── */}
+        <section className="px-4 py-16 sm:px-6 lg:px-10">
           <div className="invitation-shell mx-auto max-w-6xl">
-            <motion.div {...fadeUp} className="mb-8 max-w-2xl">
-              {/* ✅ Kicker dengan warna emas luxury */}
-              <p className="luxury-kicker text-[#D4AF37]">The Bride & Groom</p>
-              {/* ✅ Judul elegan dalam bahasa Inggris */}
-              <h2 className="luxury-section-title mt-3 text-foreground">
-                Two souls beautifully intertwined in a single, sacred journey.
-              </h2>
-            </motion.div>
-            <div className="grid gap-5 lg:grid-cols-2">
+            
+            {/* ✅ REVISI 1: JUDUL CREST BRIDE & GROOM */}
+            <SectionHeader 
+              kicker="The Bride & Groom"
+              title={<>A Celebration<br/>Of Love</>}
+              subtitle="Two souls beautifully intertwined in a single, sacred journey."
+              icon={Heart}
+            />
+            
+            <div className="grid gap-20 lg:gap-12 lg:grid-cols-2">
               {coupleCards.map((person, index) => (
                 <motion.div
                   key={person.name}
                   {...fadeUp}
-                  // FIX TS ERROR: Gunakan as any untuk membypass strict type checking
-                  transition={{ ...(fadeUp.transition as any), delay: index * 0.12 }}
+                  transition={{ ...(fadeUp.transition as any), delay: index * 0.15 }}
                 >
-                  <div className="overflow-hidden rounded-[2rem] border-white/45 bg-[hsl(var(--card)/0.66)] shadow-[0_28px_70px_rgba(88,66,49,0.12)] backdrop-blur-2xl">
-                    <div className="relative p-6 sm:p-8">
-                      <div className={`absolute inset-0 bg-gradient-to-br ${person.accent} opacity-70`} />
-                      <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center">
-                        {/* ✅ FIX: Efek Floating Parallax sangat halus pada foto mempelai */}
-                        <motion.img 
-                          animate={{ y: [0, -6, 0] }} 
-                          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: index * 1.5 }}
-                          src={person.image} 
-                          alt={person.name} 
-                          className="h-28 w-28 rounded-[2rem] object-cover shadow-[0_10px_30px_rgba(212,175,55,0.15)] border border-[#D4AF37]/20" 
-                        />
-                        <div className="space-y-3">
-                          <p className="text-xs uppercase tracking-[0.35em] text-primary/70">{person.role}</p>
-                          <div>
-                            <h3 className="font-serif text-3xl text-foreground">{person.name}</h3>
-                            <p className="mt-2 max-w-md text-sm leading-7 text-muted-foreground">{person.description}</p>
-                          </div>
-                          <a
-                            href={person.instagram}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-2 text-sm text-foreground transition-colors duration-300 hover:text-primary"
-                          >
-                            <ExternalLink className="h-4 w-4" />
-                            Follow on Instagram
-                          </a>
+                  <div className="group relative flex flex-col items-center text-center">
+                    <div className="relative mb-8 w-full max-w-[260px] sm:max-w-[300px]">
+                      <div className={`absolute inset-0 bg-gradient-to-t ${person.accent} blur-3xl opacity-30 transition-opacity duration-700 group-hover:opacity-50`} />
+                      <motion.img 
+                        animate={{ y: [0, -8, 0] }} 
+                        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: index * 2 }}
+                        src={person.image} 
+                        alt={person.name} 
+                        className="relative z-10 aspect-[3/4] w-full object-cover rounded-t-full rounded-b-[2.5rem] border border-[#D4AF37]/30 shadow-[0_24px_50px_rgba(0,0,0,0.4)] transition-transform duration-700 group-hover:scale-[1.02]" 
+                      />
+                    </div>
+                    
+                    <div className="space-y-4 px-4 relative z-20">
+                      <p className="text-xs uppercase tracking-[0.4em] text-[#D4AF37]">{person.role}</p>
+                      <h3 className="font-serif text-4xl sm:text-5xl text-white drop-shadow-md">{person.name}</h3>
+                      <p className="mx-auto max-w-sm text-sm leading-relaxed text-white/60">{person.description}</p>
+                      <a
+                        href={person.instagram}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 pt-4 text-[0.65rem] uppercase tracking-widest text-white/40 transition-colors duration-300 hover:text-[#D4AF37]"
+                      >
+                        <ExternalLink className="h-3 w-3" />
+                        Follow on Instagram
+                      </a>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+       {/* ── SECTION: SACRED MOMENTS (JADWAL ACARA) ── */}
+       <section ref={detailsRef} className="relative px-4 py-28 sm:px-6 lg:px-10 overflow-hidden">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_60%,rgba(212,175,55,0.05)_0%,transparent_70%)]"
+        />
+
+        <div className="invitation-shell relative z-10 mx-auto max-w-6xl space-y-14">
+
+          {/* ✅ REVISI 2: JUDUL CREST + TIMEPIECE COUNTDOWN DI BAWAHNYA */}
+          <div className="flex flex-col items-center justify-center gap-8">
+            <SectionHeader 
+              kicker="Sacred Moments"
+              title="The Sacred Milestones"
+              subtitle={<>That mark the beginning<br className="hidden sm:block" /> of our forever.</>}
+              icon={CalendarDays}
+            />
+
+            {/* Timepiece Countdown Centered */}
+            <div className="flex items-center gap-4 md:gap-6 rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/[0.03] px-6 py-3 shadow-[0_0_30px_rgba(212,175,55,0.03)] backdrop-blur-md -mt-8 relative z-20">
+              {countdown.map((item, index) => (
+                <div key={item.label} className="flex items-center gap-4 md:gap-6">
+                  <div className="flex flex-col items-center min-w-[2.5rem]">
+                    <span className="font-serif text-2xl leading-none text-[#D4AF37]/90 drop-shadow-sm">
+                      {String(item.value).padStart(2, '0')}
+                    </span>
+                    <span className="mt-1.5 text-[0.55rem] uppercase tracking-[0.4em] text-white/40">
+                      {item.label}
+                    </span>
+                  </div>
+                  {index < countdown.length - 1 && (
+                    <div className="h-8 w-px bg-white/10" />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* EVENTS GRID */}
+          <div className="grid gap-5 lg:gap-8 lg:grid-cols-2 pt-6">
+            {[...events]
+              .sort((a, b) => (a.isHighlight === b.isHighlight ? 0 : a.isHighlight ? 1 : -1))
+              .map((event, index) => (
+              <motion.div
+                key={event.title}
+                {...fadeUp}
+                transition={{ ...(fadeUp.transition as any), delay: index * 0.15 }}
+                className={
+                  event.isHighlight
+                    ? "lg:col-span-2 mx-auto w-full max-w-[58rem]"
+                    : "flex flex-col h-full"
+                }
+              >
+                <div
+                  className={`relative flex h-full flex-col overflow-hidden transition-all duration-700
+                    ${event.isHighlight
+                      ? [
+                          "rounded-[2.5rem]",
+                          "bg-gradient-to-b from-[#1e1712] to-[#100d0b]",
+                          "border border-[#D4AF37]/25",
+                          "shadow-[0_0_0_1px_rgba(212,175,55,0.08),0_8px_80px_rgba(212,175,55,0.10),0_32px_100px_rgba(0,0,0,0.6)]",
+                          "p-8 sm:p-12 lg:p-16",
+                        ].join(" ")
+                      : [
+                          "rounded-[1.75rem]",
+                          "bg-white/[0.025]",
+                          "border border-white/[0.07]",
+                          "shadow-none",
+                          "p-6 sm:p-8",
+                          "opacity-70 hover:opacity-90 transition-opacity duration-500",
+                        ].join(" ")
+                    }`}
+                >
+                  {event.isHighlight && (
+                    <>
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_30%,rgba(212,175,55,0.07)_0%,transparent_70%)] mix-blend-screen"
+                      />
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute bottom-0 left-0 right-0 h-48 z-0 bg-gradient-to-t from-[rgba(212,175,55,0.04)] to-transparent"
+                      />
+                    </>
+                  )}
+
+                  {/* FLORAL CORNER DI KEEMPAT SUDUT */}
+                  <div className={`absolute inset-0 z-0 pointer-events-none transition-opacity duration-1000 ${event.isHighlight ? "opacity-100" : "opacity-40"}`}>
+                    <FloralCorner className="absolute top-0 left-0 w-32 h-32 sm:w-40 sm:h-40 text-[#D4AF37]" />
+                    <FloralCorner className="absolute top-0 right-0 w-32 h-32 sm:w-40 sm:h-40 text-[#D4AF37] scale-x-[-1]" />
+                    <FloralCorner className="absolute bottom-0 left-0 w-32 h-32 sm:w-40 sm:h-40 text-[#D4AF37] scale-y-[-1]" />
+                    <FloralCorner className="absolute bottom-0 right-0 w-32 h-32 sm:w-40 sm:h-40 text-[#D4AF37] scale-x-[-1] scale-y-[-1]" />
+                  </div>
+
+                  <div className="relative z-10 flex h-full flex-col">
+                    <div className={`${event.isHighlight ? "mb-12 text-center" : "mb-7 text-left"}`}>
+                      {event.isHighlight && (
+                        <div className="mb-5 flex items-center justify-center gap-3">
+                          <div className="h-[1px] w-10 bg-gradient-to-r from-transparent to-[#D4AF37]/40" />
+                          <span className="text-[0.6rem] uppercase tracking-[0.5em] text-[#D4AF37]/80">
+                            The Main Celebration
+                          </span>
+                          <div className="h-[1px] w-10 bg-gradient-to-l from-transparent to-[#D4AF37]/40" />
                         </div>
+                      )}
+
+                      <p
+                        className={`text-[0.6rem] uppercase tracking-[0.45em]
+                          ${event.isHighlight ? "text-white/45 mb-4" : "text-white/30 mb-3"}`}
+                      >
+                        {event.title}
+                      </p>
+
+                      <h3
+                        className={`font-serif leading-[1.1]
+                          ${event.isHighlight
+                            ? "text-4xl sm:text-5xl lg:text-6xl text-white"
+                            : "text-2xl sm:text-[1.65rem] text-white/65"
+                          }`}
+                      >
+                        {event.venue}
+                      </h3>
+
+                      {event.isHighlight && (
+                        <div className="mt-9 flex justify-center">
+                          <div className="h-[1px] w-20 bg-gradient-to-r from-transparent via-[#D4AF37]/45 to-transparent" />
+                        </div>
+                      )}
+                    </div>
+
+                    <div
+                      className={`
+                        ${event.isHighlight
+                          ? "mx-auto w-full max-w-2xl grid sm:grid-cols-2 gap-8 text-center sm:text-left"
+                          : "grid gap-5 text-left text-sm"
+                        }`}
+                    >
+                      <div className={`flex flex-col gap-1
+                        ${event.isHighlight ? "items-center sm:items-start" : "items-start"}`}
+                      >
+                        <p className={`text-[0.58rem] uppercase tracking-[0.4em]
+                          ${event.isHighlight ? "text-[#D4AF37]/55 mb-1" : "text-white/25"}`}>
+                          When
+                        </p>
+                        <p className={`font-serif
+                          ${event.isHighlight
+                            ? "text-xl text-[#D4AF37]"
+                            : "text-white/60 text-sm"
+                          }`}>
+                          {event.dateLabel}
+                        </p>
+                        <p className={`mt-0.5 uppercase tracking-widest
+                          ${event.isHighlight
+                            ? "text-[0.68rem] text-white/45"
+                            : "text-[0.65rem] text-white/35"
+                          }`}>
+                          {event.timeLabel}
+                        </p>
+                      </div>
+
+                      <div className={`flex flex-col gap-1
+                        ${event.isHighlight ? "items-center sm:items-start" : "items-start"}`}
+                      >
+                        <p className={`text-[0.58rem] uppercase tracking-[0.4em]
+                          ${event.isHighlight ? "text-[#D4AF37]/55 mb-1" : "text-white/25"}`}>
+                          Where
+                        </p>
+                        <p className={`leading-relaxed
+                          ${event.isHighlight
+                            ? "text-sm text-white/65 max-w-xs"
+                            : "text-sm text-white/45"
+                          }`}>
+                          {event.address}
+                        </p>
                       </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
 
-       {/* ✅ Pasang detailsRef di sini agar layar tahu harus scroll ke mana */}
-        <section ref={detailsRef} className="px-4 py-24 sm:px-6 lg:px-10">
-          <div className="invitation-shell mx-auto max-w-6xl space-y-8">
-            <motion.div {...fadeUp} className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                {/* ✅ Kicker emas */}
-                <p className="luxury-kicker text-[#D4AF37]">Sacred Moments</p>
-                {/* ✅ Judul elegan dalam bahasa Inggris */}
-                <h2 className="luxury-section-title mt-3 text-foreground">
-                  The sacred milestones that mark the beginning of our forever.
-                </h2>
-              </div>
-              <div className="grid grid-cols-4 gap-2 rounded-[1.75rem] border border-white/45 bg-[hsl(var(--card)/0.72)] p-3 shadow-[0_20px_50px_rgba(89,69,52,0.1)] backdrop-blur-xl">
-                {countdown.map((item) => (
-                  <div key={item.label} className="rounded-2xl bg-[hsl(var(--background)/0.8)] px-3 py-4 text-center">
-                    <p className="text-2xl font-semibold text-foreground sm:text-3xl">{String(item.value).padStart(2, '0')}</p>
-                    <p className="mt-1 text-[0.65rem] uppercase tracking-[0.25em] text-muted-foreground">{item.label}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+                    <div
+                      className={`mt-auto flex flex-col gap-3 sm:flex-row
+                        ${event.isHighlight ? "justify-center pt-12" : "pt-8"}`}
+                    >
+                      <a
+                        href={event.calendarUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={`flex h-12 items-center justify-center rounded-full
+                          font-medium tracking-wide transition-all duration-300
+                          ${event.isHighlight
+                            ? [
+                                "px-12 bg-[#D4AF37] text-[#0e0b08] text-sm",
+                                "shadow-[0_0_24px_rgba(212,175,55,0.22)]",
+                                "hover:shadow-[0_0_36px_rgba(212,175,55,0.38)] hover:scale-[1.02] hover:bg-[#dbb93d]",
+                              ].join(" ")
+                            : "flex-1 border border-white/[0.08] bg-white/[0.02] text-white/40 text-xs hover:text-white/65 hover:border-white/15"
+                          }`}
+                      >
+                        Save to Calendar
+                      </a>
 
-            <div className="grid gap-5 lg:grid-cols-2">
-              {events.map((event, index) => (
-                <motion.div 
-                  key={event.title} 
-                  {...fadeUp} 
-                  // FIX TS ERROR: Gunakan as any
-                  transition={{ ...(fadeUp.transition as any), delay: index * 0.1 }}
-                >
-                  <div className="h-full rounded-[2rem] border-white/45 bg-[hsl(var(--card)/0.7)] shadow-[0_24px_80px_rgba(88,66,49,0.11)] backdrop-blur-2xl">
-                    <div className="flex h-full flex-col gap-6 p-6 sm:p-8">
-                      <div className="space-y-2">
-                        <p className="text-xs uppercase tracking-[0.35em] text-primary/75">{event.title}</p>
-                        <h3 className="font-serif text-3xl text-foreground">{event.venue}</h3>
-                      </div>
-                      <div className="space-y-4 text-sm text-muted-foreground">
-                        <div className="flex gap-3"><CalendarDays className="mt-0.5 h-4 w-4 text-primary" /><div><p>{event.dateLabel}</p><p>{event.timeLabel}</p></div></div>
-                        <div className="flex gap-3"><MapPin className="mt-0.5 h-4 w-4 text-primary" /><p>{event.address}</p></div>
-                      </div>
-                      <div className="mt-auto flex flex-col gap-3 sm:flex-row">
-                        <a href={event.calendarUrl} target="_blank" rel="noreferrer" className="flex h-11 flex-1 items-center justify-center rounded-full bg-primary text-primary-foreground hover:scale-[1.02] transition-transform">
-                          Save to Calendar
-                        </a>
-                        <a href={event.mapsUrl} target="_blank" rel="noreferrer" className="flex h-11 flex-1 items-center justify-center rounded-full border border-[hsl(var(--primary)/0.25)] bg-[hsl(var(--background)/0.55)] hover:scale-[1.02] transition-transform">
-                          Open Google Maps
-                        </a>
-                      </div>
+                      <a
+                        href={event.mapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={`flex h-12 items-center justify-center rounded-full
+                          transition-all duration-300
+                          ${event.isHighlight
+                            ? [
+                                "px-12 border border-[#D4AF37]/25 text-[#D4AF37]/75 text-sm tracking-wide",
+                                "hover:border-[#D4AF37]/50 hover:text-[#D4AF37] hover:bg-[#D4AF37]/[0.05]",
+                              ].join(" ")
+                            : "flex-1 text-xs text-white/35 underline underline-offset-4 decoration-white/15 hover:text-white/55"
+                          }`}
+                      >
+                        Google Maps
+                      </a>
                     </div>
                   </div>
-                </motion.div>
-              ))}
-            </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
-        </section>
+        </div>
+       </section>
 
         <motion.section {...fadeUp} className="px-4 py-24 sm:px-6 lg:px-10">
           <div className="invitation-shell mx-auto max-w-4xl space-y-12 rounded-[2rem] border border-white/45 bg-[hsl(var(--card)/0.64)] px-6 py-16 text-center shadow-[0_20px_70px_rgba(100,77,59,0.09)] backdrop-blur-2xl sm:px-12 sm:py-20">
@@ -435,16 +674,34 @@ export default function HomePage() {
           </div>
         </motion.section>
 
-        <GiftRegistrySection />
-        <RsvpSection />
+        {/* ── SECTION: WEDDING GIFT ── */}
+        <div className="py-12">
+          {/* ✅ REVISI 3: JUDUL CREST WEDDING GIFT */}
+          <SectionHeader 
+            kicker="Wedding Gift"
+            title="A Token of Love"
+            subtitle="Your presence is our greatest joy. Should you wish to bless us further, a digital token is deeply appreciated."
+            theme="light"
+          />
+          <GiftRegistrySection />
+        </div>
+
+        {/* ── SECTION: RSVP & WISHES ── */}
+        <div className="py-12">
+          {/* ✅ REVISI 4: JUDUL CREST RSVP & WISHES */}
+          <SectionHeader 
+            kicker="RSVP & Wishes"
+            title="Be Our Guest"
+            subtitle="Let us know you’ll be joining us, and kindly leave a heartfelt note we’ll keep close to our hearts."
+            theme="light"
+          />
+          <RsvpSection />
+        </div>
         
-        {/* ✅ FIX: Signature di paling bawah menggunakan warna emas Luxury untuk kedua teks */}
         <section className="pb-24 pt-10 text-center">
           <motion.div {...fadeUp} viewport={{ once: true, amount: 0.5 }}>
-            {/* "Imelia & Afif" menggunakan emas #D4AF37/70 agar kontras dan mewah */}
             <p className="font-script text-4xl md:text-5xl text-[#D4AF37]/70">Arin & Afif</p>
-            {/* ✅ "Forever Begins..." diganti dari putih menjadi emas transparan #D4AF37/70 agar kontras di area terang */}
-            <p className="mt-4 text-[0.65rem] uppercase tracking-[0.4em] text-[#D4AF37]/70">Forever Begins • 31 Mei 2026</p>
+            <p className="mt-4 text-[0.65rem] uppercase tracking-[0.4em] text-[#D4AF37]/70">Forever Begins • 1 June 2026</p>
           </motion.div>
         </section>
 
@@ -452,19 +709,15 @@ export default function HomePage() {
 
       <audio ref={audioRef} src={invitationData.musicUrl} loop preload="none" />
       
-      {/* Memastikan elemen interaktif overlay dan musik tetap di atas semuanya z-[50] */}
       <div className="relative z-[50]">
         {!showOverlay && <AudioOrb isPlaying={isPlaying} onToggle={toggleMusic} />}
       </div>
 
-      {/* MENGGUNAKAN ANIMATE PRESENCE UNTUK TRANSISI "MEMBUKA UNDANGAN" YANG SANGAT HALUS */}
       <AnimatePresence>
         {showOverlay && (
           <motion.div 
             key="onboarding-overlay"
-            // will-change-transform mengaktifkan Hardware Acceleration agar tidak lag
             className="fixed inset-0 z-[70] origin-center will-change-transform"
-            // Efek Zoom-In ke dalam layar sambil nge-blur
             exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }} 
             transition={{ duration: 1.2, ease: [0.32, 0.72, 0, 1] }} 
           >

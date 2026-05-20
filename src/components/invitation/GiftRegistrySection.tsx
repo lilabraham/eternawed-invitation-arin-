@@ -52,30 +52,11 @@ export function GiftRegistrySection() {
   }
 
   return (
-    <section className="px-4 py-24 sm:px-6 lg:px-10">
+    // ✅ FIX: Ganti <section py-24> menjadi <div> biasa agar tidak ada jarak berlebih dengan judul baru
+    <div className="px-4 sm:px-6 lg:px-10">
       <div className="invitation-shell mx-auto max-w-6xl">
-        <motion.div 
-          initial={{ opacity: 0, y: 24 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true, amount: 0.2 }} 
-          transition={{ duration: 0.7 }} 
-          className="mb-10 max-w-2xl"
-        >
-          {/* ✅ CONTRAST BOOST: Emas Terang + Shadow */}
-          <p className="luxury-kicker text-[#E6C35C] font-semibold drop-shadow-[0_1.2px_1.2px_rgba(212,175,55,0.4)]">
-            Wedding Gift
-          </p>
-          
-          {/* ✅ CONTRAST BOOST: Off-White + Shadow */}
-          <h2 className="luxury-section-title mt-3 text-white/95 drop-shadow-[0_2px_2px_rgba(212,175,55,0.25)]">
-            A Token of Love
-          </h2>
-          
-          {/* ✅ CONTRAST BOOST: Teks putih terang agar mudah dibaca */}
-          <p className="luxury-copy mt-4 text-foreground font-normal leading-relaxed text-white/90">
-            Your presence is our greatest joy. Should you wish to bless us further, a digital token is deeply appreciated.
-          </p>
-        </motion.div>
+        
+        {/* Teks Judul Lama sudah dihapus sepenuhnya di sini */}
 
         <div className="grid gap-6 md:grid-cols-2">
           {MANUAL_REGISTRIES.map((registry, index) => (
@@ -85,10 +66,8 @@ export function GiftRegistrySection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              // ✅ FIX: Tambahkan relative & overflow-hidden agar mawar tidak keluar dari kartu
               className="relative overflow-hidden rounded-[2rem] border-white/45 bg-[hsl(var(--card)/0.75)] shadow-[0_24px_80px_rgba(88,66,49,0.11)] backdrop-blur-2xl"
             >
-              {/* ✅ Mawar di sudut kanan bawah */}
               <CornerRose className="-bottom-6 -right-6 w-40 h-40 opacity-70" />
 
               <div className="relative z-10 space-y-5 p-6 sm:p-8">
@@ -121,6 +100,6 @@ export function GiftRegistrySection() {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   )
 }

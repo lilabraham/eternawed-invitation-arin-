@@ -23,76 +23,36 @@ export const invitationData = {
 
 export const events = [
   {
-    title: 'Akad Nikah & Resepsi',
-    dateLabel: '31 Mei & 1 Juni 2026',
-    timeLabel: 'Akad (Minggu): 09.00 WIB | Resepsi (Senin): 09.00 WIB',
+    id: 'akad',
+    title: 'Akad Nikah', // Tetap mempertahankan istilah sakral/budaya
+    dateLabel: 'Sunday, May 31, 2026',
+    timeLabel: '09:00 AM onwards', // Mengubah '09.00 WIB - Selesai' agar lebih elegan
     venue: 'Kediaman Mempelai Wanita',
     address: 'Jl. Lkr. Utara No.02, Dusun I, Randudongkal, Kec. Randudongkal, Kabupaten Pemalang, Jawa Tengah 52353 (Masuk gang Yuna Print)',
-    mapsUrl: 'https://www.google.com/maps?q=-7.096988037704065,109.32443035659291', // Sesuai alamat Pemalang
-    calendarUrl: 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Akad+%26+Resepsi+Imelia+%26+Afif&dates=20260530T020000Z/20260531T060000Z',
+    mapsUrl: 'https://www.google.com/maps?q=-7.096988037704065,109.32443035659291',
+    calendarUrl: 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Akad+Nikah+Imelia+%26+Afif&dates=20260531T020000Z/20260531T050000Z',
+    isHighlight: false,
   },
   {
-    title: 'Ngunduh Mantu',
-    dateLabel: '5 & 6 Juni 2026',
-    timeLabel: '09.00 WIB - Selesai',
+    id: 'resepsi',
+    title: 'Wedding Reception', // Diubah ke bahasa Inggris agar senada dengan "The Main Celebration"
+    dateLabel: 'Monday, June 1, 2026',
+    timeLabel: '09:00 AM onwards',
+    venue: 'Kediaman Mempelai Wanita',
+    address: 'Jl. Lkr. Utara No.02, Dusun I, Randudongkal, Kec. Randudongkal, Kabupaten Pemalang, Jawa Tengah 52353 (Masuk gang Yuna Print)',
+    mapsUrl: 'https://www.google.com/maps?q=-7.096988037704065,109.32443035659291',
+    calendarUrl: 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding+Reception+Imelia+%26+Afif&dates=20260601T020000Z/20260601T070000Z',
+    isHighlight: true,
+  },
+  {
+    id: 'ngunduh',
+    title: 'Ngunduh Mantu', // Tetap mempertahankan istilah budaya
+    dateLabel: 'June 5 & 6, 2026', // Format simpel dan elegan untuk 2 hari
+    timeLabel: '09:00 AM onwards',
     venue: 'Kediaman Mempelai Pria',
     address: 'Jl. Tlangu Tengah, Tlangu, Sukorejo, Kec. Sukorejo, Kabupaten Kendal, Jawa Tengah 51363',
     mapsUrl: 'https://www.google.com/maps?q=-7.080696,110.048975',
-    calendarUrl: 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ngunduh+Mantu+Imelia+%26+Afif&dates=20260604T020000Z/20260604T060000Z',
+    calendarUrl: 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ngunduh+Mantu+Imelia+%26+Afif&dates=20260605T020000Z/20260606T100000Z',
+    isHighlight: false,
   },
-] as const
-
-export const loveStory = [
-  {
-    year: '2021',
-    title: 'First Met',
-    description:
-      'We met through a mutual friend at a small coffee tasting and ended up talking long after everyone else had left.',
-  },
-  {
-    year: '2022',
-    title: 'Our First Date',
-    description:
-      'A gallery date turned into dinner, a city walk, and the first time we both felt life slow down in the best way.',
-  },
-  {
-    year: '2024',
-    title: 'The Proposal',
-    description:
-      'At golden hour, in the middle of our favorite quiet escape, one question made every chapter feel destined.',
-  },
-  {
-    year: '2026',
-    title: 'Forever Begins',
-    description:
-      'Now we are counting down to the day we celebrate love, family, and a lifetime of growing together.',
-  },
-] as const
-
-export const galleryPhotos = [
-  {
-    src: 'https://images.unsplash.com/photo-1549578117-eee85f4c009b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
-    alt: 'Bride and groom standing together in warm natural light',
-    className: 'md:col-span-2 md:row-span-2',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1511405889574-b01de1da5441?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=900',
-    alt: 'Couple silhouette during sunset for wedding gallery',
-    className: 'md:col-span-1 md:row-span-1',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1652195720148-4f6d3d761aa6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=900',
-    alt: 'Romantic close wedding portrait of the couple',
-    className: 'md:col-span-1 md:row-span-1',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1761211488173-a7154314420a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=900',
-    alt: 'Elegant wedding couple embracing at sunset',
-    className: 'md:col-span-1 md:row-span-2',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1492175742197-ed20dc5a6bed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=900',
-    alt: 'Bride portrait with dramatic soft shadows',
-    className: 'md:col-span-1 md:row-span-1',
-  },
-] as const
+] as const;
