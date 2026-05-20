@@ -25,7 +25,7 @@ export const events = [
   {
     id: 'akad',
     title: 'Akad Nikah', // Tetap mempertahankan istilah sakral/budaya
-    dateLabel: 'Sunday, May 31, 2026',
+    dateLabel: 'Sunday May 31, 2026',
     timeLabel: '09:00 AM onwards', // Mengubah '09.00 WIB - Selesai' agar lebih elegan
     venue: 'Kediaman Mempelai Wanita',
     address: 'Jl. Lkr. Utara No.02, Dusun I, Randudongkal, Kec. Randudongkal, Kabupaten Pemalang, Jawa Tengah 52353 (Masuk gang Yuna Print)',
@@ -36,7 +36,7 @@ export const events = [
   {
     id: 'resepsi',
     title: 'Wedding Reception', // Diubah ke bahasa Inggris agar senada dengan "The Main Celebration"
-    dateLabel: 'Monday, June 1, 2026',
+    dateLabel: 'Monday June 1, 2026',
     timeLabel: '09:00 AM onwards',
     venue: 'Kediaman Mempelai Wanita',
     address: 'Jl. Lkr. Utara No.02, Dusun I, Randudongkal, Kec. Randudongkal, Kabupaten Pemalang, Jawa Tengah 52353 (Masuk gang Yuna Print)',
