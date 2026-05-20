@@ -171,27 +171,39 @@ export function RsvpSection() {
     >,
   ) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!form.guestName.trim()) return;
-    setIsSubmitting(true);
-
+ const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (!form.guestName.trim()) { alert('Please enter your name'); return; }
+    
+    setIsSubmitting(true)
+    
     try {
-      // ✅ PERBAIKAN: Menggunakan GOOGLE_SCRIPT_URL
+      // Kita kembalikan ke FormData agar sesuai dengan script di Google Sheet
+      const formData = new FormData();
+      formData.append('guestName', form.guestName);
+      formData.append('guestCount', form.guestCount);
+      formData.append('attendanceStatus', form.attendanceStatus);
+      formData.append('message', form.message);
+
       await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        body: JSON.stringify(form),
-        mode: "no-cors", // Pastikan mode ini tetap ada jika diperlukan
+        method: 'POST',
+        body: formData, // Mengirim sebagai FormData, bukan JSON
+        mode: 'no-cors' // Wajib untuk Google Apps Script
       });
+
       setSubmitted(true);
       setForm(INITIAL_FORM);
+      
+      // Refresh wall agar data baru muncul
       setTimeout(fetchWishes, 1500);
+      
     } catch (err) {
-      console.error("Submission failed:", err);
+      console.error('Submission failed:', err);
+      alert('Could not send RSVP. Please check your connection.');
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   return (
     <section className="px-4 pb-32 sm:px-6 lg:px-10">
