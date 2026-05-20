@@ -300,10 +300,10 @@ export function RsvpSection() {
                         }
                       >
                         <option value="attending" className="bg-[#14100e]">
-                          I&apos;m coming!
+                          Joyfully Accepted!
                         </option>
                         <option value="unable" className="bg-[#14100e]">
-                          Unable to attend
+                          Sadly Declined
                         </option>
                       </select>
                     </div>
