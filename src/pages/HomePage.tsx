@@ -196,7 +196,7 @@ export default function HomePage() {
   const timelineRef = useRef<HTMLElement | null>(null)
   const [showOverlay, setShowOverlay] = useState(true)
   const [isPlaying, setIsPlaying] = useState(false)
-  const countdown = useCountdown(invitationData.weddingDateIso)
+  const countdown = useCountdown()
   
   const guestName = useMemo(() => {
     if (typeof window === 'undefined') return 'Our Dearest Guest'
