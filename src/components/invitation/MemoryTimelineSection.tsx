@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles } from 'lucide-react'; // Pastikan ikon Sparkles di-import
+import { Sparkles } from 'lucide-react';
 
 // ============================================================
-// PARTICLES — toned down, deeper, less foggy
+// PARTICLES
 // ============================================================
 const generateDepthParticles = (count: number) => {
   return Array.from({ length: count }).map((_, i) => {
@@ -31,6 +31,124 @@ const generateDepthParticles = (count: number) => {
 };
 
 const particles = generateDepthParticles(10);
+
+// ============================================================
+// CINEMATIC MARQUEE — Credits style, Quiet Luxury
+// Teks masuk dari ujung kanan, keluar di ujung kiri.
+// Loop mathematically seamless via Web Animations API.
+// ============================================================
+const MARQUEE_ITEMS = [
+  "Arin & Afif",
+  "✦",
+  "A love written in stillness",
+  "✦",
+  "Arin & Afif",
+  "✦",
+  "A love written in stillness",
+  "✦",
+];
+
+// Satu strip — akan di-render 2x berdampingan untuk seamless loop
+const MarqueeStrip = () => (
+  <>
+    {MARQUEE_ITEMS.map((item, i) => {
+      const isDiamond = item === '✦';
+      return (
+        <span
+          key={i}
+          style={{
+            display: 'inline-block',
+            fontFamily: 'Georgia, serif',
+            fontSize: isDiamond ? '0.5rem' : '0.6rem',
+            fontWeight: 300,
+            letterSpacing: isDiamond ? '0.1em' : '0.45em',
+            textTransform: isDiamond ? 'none' : 'uppercase',
+            color: isDiamond
+              ? 'rgba(209,176,107,0.50)'
+              : 'rgba(193,168,106,0.35)',
+            textShadow: isDiamond
+              ? '0 0 12px rgba(209,176,107,0.35)'
+              : '0 0 20px rgba(193,168,106,0.15)',
+            marginRight: isDiamond ? '3.5rem' : '3rem',
+          }}
+        >
+          {item}
+        </span>
+      );
+    })}
+  </>
+);
+
+const CinematicMarquee = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const track = trackRef.current;
+    if (!container || !track) return;
+
+    // Ukur lebar aktual setelah render
+    const C = container.offsetWidth;           // lebar viewport/container
+    const W = track.scrollWidth / 2;          // lebar SATU strip (track = 2 strip)
+
+    // Matematika seamless credits dari kanan:
+    //   startX = C - W  → karakter pertama strip-1 tepat di ujung kanan
+    //   endX   = C - 2W → strip-1 habis keluar kiri, strip-2 mengisi posisi
+    //   loop kembali ke startX = seamless karena strip-1 & strip-2 identik
+    const startX = C - W;
+    const endX   = C - 2 * W;
+
+    // Kecepatan ~30px/s — pelan, anggun, quiet luxury
+    // Min 38 detik agar tidak terlalu cepat pada layar kecil
+    const duration = Math.max(38_000, (W / 30) * 1000);
+
+    const anim = track.animate(
+      [
+        { transform: `translateX(${startX}px)` },
+        { transform: `translateX(${endX}px)` },
+      ],
+      {
+        duration,
+        iterations: Infinity,
+        easing: 'linear',
+      }
+    );
+
+    return () => anim.cancel();
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative w-full overflow-hidden"
+      style={{
+        borderTop: '1px solid rgba(193,168,106,0.10)',
+        borderBottom: '1px solid rgba(193,168,106,0.10)',
+        padding: '14px 0',
+        WebkitMaskImage:
+          'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)',
+        maskImage:
+          'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)',
+      }}
+    >
+      {/* 2 strip identik — seamless loop saat strip-1 keluar, strip-2 masuk */}
+      <div
+        ref={trackRef}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          whiteSpace: 'nowrap',
+          width: 'max-content',
+          willChange: 'transform',
+        }}
+      >
+        <MarqueeStrip />
+        <MarqueeStrip />
+      </div>
+    </div>
+  );
+};
 
 // ============================================================
 // SACRED EMBLEM — fine jewelry centerpiece
@@ -219,15 +337,13 @@ export const FragmentsOfLove: React.FC = () => {
       className="relative w-full flex flex-col items-center pt-0 pb-0 overflow-hidden"
     >
 
-      {/* ── BACKGROUND: HARD HEX BLEND TO AVOID SAFARI/CHROME BANDING BUG ── */}
+      {/* ── BACKGROUND ── */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
           background: 'linear-gradient(to bottom, #0a0806 0%, #120e0b 40%, #120e0b 70%, #0d0b09 100%)',
         }}
       />
-      
-      {/* Glows diatur berlapis secara terpisah */}
       <div
         className="absolute inset-0 z-0 pointer-events-none mix-blend-screen"
         style={{
@@ -273,6 +389,13 @@ export const FragmentsOfLove: React.FC = () => {
       </div>
 
       {/* ══════════════════════════════════════════════════════ */}
+      {/* CINEMATIC MARQUEE                                      */}
+      {/* ══════════════════════════════════════════════════════ */}
+      <div className="relative z-30 w-full mt-0">
+        <CinematicMarquee />
+      </div>
+
+      {/* ══════════════════════════════════════════════════════ */}
       {/* SECTION 1: SACRED EMBLEM                               */}
       {/* ══════════════════════════════════════════════════════ */}
       <div className="relative z-30 flex flex-col items-center w-full mt-4">
@@ -280,11 +403,10 @@ export const FragmentsOfLove: React.FC = () => {
       </div>
 
       {/* ══════════════════════════════════════════════════════ */}
-      {/* SECTION 2: TITLE BLOCK — one clean hierarchy          */}
+      {/* SECTION 2: TITLE BLOCK                                 */}
       {/* ══════════════════════════════════════════════════════ */}
       <div className="relative z-30 flex flex-col items-center w-full max-w-4xl mx-auto px-6 text-center mb-28">
 
-        {/* Eyebrow label - Diubah menjadi Gaya Badge Mewah Sesuai Permintaan */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -298,7 +420,6 @@ export const FragmentsOfLove: React.FC = () => {
           </span>
         </motion.div>
 
-        {/* Main title — "Fragments of Love" */}
         <motion.h2
           initial={{ opacity: 0, y: 24, filter: 'blur(10px)' }}
           whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -322,7 +443,6 @@ export const FragmentsOfLove: React.FC = () => {
           Fragments of Love
         </motion.h2>
 
-        {/* Luxury divider */}
         <LuxuryDivider />
       </div>
 
@@ -332,7 +452,6 @@ export const FragmentsOfLove: React.FC = () => {
       <div className="relative z-30 flex flex-col w-full max-w-5xl mx-auto px-6 gap-10 sm:gap-14 mb-16">
         {fragments.map((frag, index) => {
 
-          // Typography scale
           let textStyle: React.CSSProperties = {};
           if (frag.type === 'XL') textStyle = {
             fontFamily: 'serif',
