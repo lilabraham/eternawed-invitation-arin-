@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Heart } from 'lucide-react'
-import HomePage from '@/pages/HomePage'
+import { BrowserRouter, Routes, Route } from 'react-router-dom' // ✅ Tambahkan import Router
 
-// --- KOMPONEN LUXURY PRE-LOADER ---
+import HomePage from '@/pages/HomePage'
+import FamilyPage from '@/pages/FamilyPage' // ✅ Pastikan Anda sudah membuat file ini
+
+// --- KOMPONEN LUXURY PRE-LOADER (TIDAK DIUBAH SAMA SEKALI) ---
 const Preloader = () => {
   return (
     <motion.div
@@ -84,8 +87,18 @@ function App() {
         {isLoading && <Preloader key="loader" />}
       </AnimatePresence>
       
-      {/* HomePage hanya muncul/render setelah loading selesai untuk performa maksimal */}
-      {!isLoading && <HomePage />}
+      {/* ✅ PERUBAHAN AMAN: Membungkus page dengan Router HANYA setelah loading selesai */}
+      {!isLoading && (
+        <BrowserRouter>
+          <Routes>
+            {/* Rute Utama (Client Asli) -> Tidak ada yang berubah dari segi fungsionalitas */}
+            <Route path="/" element={<HomePage />} />
+            
+            {/* Rute Baru (Family/General) -> Hanya bisa diakses jika link ditambahkan /family */}
+            <Route path="/family" element={<FamilyPage />} />
+          </Routes>
+        </BrowserRouter>
+      )}
     </>
   )
 }
