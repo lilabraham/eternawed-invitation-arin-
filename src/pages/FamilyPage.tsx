@@ -112,9 +112,9 @@ export default function FamilyPage() {
   const countdown = useCountdown()
   
   const guestName = useMemo(() => {
-    if (typeof window === 'undefined') return 'Our Beloved Family'
+    if (typeof window === 'undefined') return 'Honored Guest'
     const guestParam = new URLSearchParams(window.location.search).get('to')
-    return guestParam ? guestParam.replace(/\+/g, ' ').trim() : 'Our Beloved Family'
+    return guestParam ? guestParam.replace(/\+/g, ' ').trim() : 'Honored Guest'
   }, [])
 
   const coupleCards = useMemo(() => [

@@ -95,7 +95,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             
             {/* Rute Baru (Family/General) -> Hanya bisa diakses jika link ditambahkan /family */}
-            <Route path="/family" element={<FamilyPage />} />
+            <Route path="/honored-guest" element={<FamilyPage />} />
           </Routes>
         </BrowserRouter>
       )}
