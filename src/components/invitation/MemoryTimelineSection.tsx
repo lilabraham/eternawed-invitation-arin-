@@ -1,96 +1,401 @@
-// src/components/invitation/MemoryTimelineSection.tsx
-import { motion } from 'framer-motion'
-import { Heart } from 'lucide-react'
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Sparkles } from 'lucide-react'; // Pastikan ikon Sparkles di-import
 
-const milestones = [
-  {
-    year: '2020',
-    title: 'The First Chapter',
-    description: 'A serendipitous meeting that turned an ordinary day into the beginning of a lifetime story.',
-  },
-  {
-    year: '2023',
-    title: 'A Promise Made',
-    description: 'Under a sky full of stars, a quiet question was asked, and a tearful "Yes" sealed our forever.',
-  },
-  {
-    year: '2026',
-    title: 'The Sacred Union',
-    description: 'Two souls, completely intertwined. Standing together, ready to embrace the journey ahead.',
-  }
-]
+// ============================================================
+// PARTICLES — toned down, deeper, less foggy
+// ============================================================
+const generateDepthParticles = (count: number) => {
+  return Array.from({ length: count }).map((_, i) => {
+    const layer = Math.random();
+    let size, opacity, duration, blur;
+    if (layer < 0.5) {
+      size = Math.random() * 1.2 + 0.4;
+      opacity = Math.random() * 0.03 + 0.01;
+      duration = Math.random() * 30 + 30;
+      blur = 'blur(1px)';
+    } else {
+      size = Math.random() * 1.8 + 0.8;
+      opacity = Math.random() * 0.05 + 0.015;
+      duration = Math.random() * 22 + 18;
+      blur = 'blur(0px)';
+    }
+    return {
+      id: i,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      size, opacity, duration, blur,
+      delay: Math.random() * 8,
+    };
+  });
+};
 
-export function MemoryTimelineSection() {
+const particles = generateDepthParticles(10);
+
+// ============================================================
+// SACRED EMBLEM — fine jewelry centerpiece
+// ============================================================
+const SacredEmblem = () => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.6 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+    className="relative flex flex-col items-center"
+  >
+    {/* Top thread */}
+    <motion.div
+      initial={{ height: 0 }}
+      whileInView={{ height: '10vh' }}
+      viewport={{ once: true }}
+      transition={{ duration: 1.4, ease: 'easeOut' }}
+      style={{
+        width: '1px',
+        background: 'linear-gradient(to bottom, transparent, rgba(193,168,106,0.25))',
+      }}
+    />
+
+    {/* Sacred geometry cluster */}
+    <div className="relative flex items-center justify-center my-3">
+
+      {/* Outer rotating ring */}
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
+        style={{
+          width: '52px',
+          height: '52px',
+          border: '1px solid rgba(193,168,106,0.12)',
+          borderRadius: '50%',
+          position: 'absolute',
+        }}
+      />
+
+      {/* Outer diamond frame */}
+      <div style={{
+        width: '36px',
+        height: '36px',
+        border: '1px solid rgba(193,168,106,0.22)',
+        transform: 'rotate(45deg)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+      }}>
+        {/* Inner diamond */}
+        <div style={{
+          width: '18px',
+          height: '18px',
+          border: '1px solid rgba(193,168,106,0.35)',
+          transform: 'rotate(0deg)',
+        }} />
+      </div>
+
+      {/* Horizontal line accents */}
+      <div style={{
+        position: 'absolute',
+        width: '60px',
+        height: '1px',
+        background: 'linear-gradient(to right, transparent, rgba(193,168,106,0.18), transparent)',
+      }} />
+
+      {/* Vertical line accents */}
+      <div style={{
+        position: 'absolute',
+        width: '1px',
+        height: '60px',
+        background: 'linear-gradient(to bottom, transparent, rgba(193,168,106,0.18), transparent)',
+      }} />
+
+      {/* Glowing center jewel */}
+      <div style={{
+        position: 'absolute',
+        width: '4px',
+        height: '4px',
+        background: 'rgba(209,176,107,0.9)',
+        transform: 'rotate(45deg)',
+        boxShadow: '0 0 10px rgba(209,176,107,0.6), 0 0 20px rgba(209,176,107,0.2)',
+      }} />
+
+      {/* Four corner micro-dots */}
+      {[
+        { top: '-3px', left: '50%', transform: 'translateX(-50%)' },
+        { bottom: '-3px', left: '50%', transform: 'translateX(-50%)' },
+        { left: '-3px', top: '50%', transform: 'translateY(-50%)' },
+        { right: '-3px', top: '50%', transform: 'translateY(-50%)' },
+      ].map((style, i) => (
+        <div key={i} style={{
+          position: 'absolute',
+          width: '3px',
+          height: '3px',
+          borderRadius: '50%',
+          background: 'rgba(193,168,106,0.5)',
+          ...style,
+        }} />
+      ))}
+    </div>
+
+    {/* Bottom thread */}
+    <motion.div
+      initial={{ height: 0 }}
+      whileInView={{ height: '5vh' }}
+      viewport={{ once: true }}
+      transition={{ duration: 1.0, delay: 1.2, ease: 'easeOut' }}
+      style={{
+        width: '1px',
+        background: 'linear-gradient(to bottom, rgba(193,168,106,0.25), transparent)',
+        marginTop: '12px',
+      }}
+    />
+  </motion.div>
+);
+
+// ============================================================
+// LUXURY DIVIDER
+// ============================================================
+const LuxuryDivider = () => (
+  <motion.div
+    initial={{ opacity: 0, scaleX: 0 }}
+    whileInView={{ opacity: 1, scaleX: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+    className="flex items-center justify-center gap-3 my-2"
+    style={{ width: '180px' }}
+  >
+    <div style={{
+      flex: 1,
+      height: '1px',
+      background: 'linear-gradient(to right, transparent, rgba(193,168,106,0.35))',
+    }} />
+    <div style={{
+      width: '5px',
+      height: '5px',
+      border: '1px solid rgba(193,168,106,0.5)',
+      transform: 'rotate(45deg)',
+      background: 'rgba(209,176,107,0.1)',
+      boxShadow: '0 0 6px rgba(209,176,107,0.2)',
+    }} />
+    <div style={{
+      flex: 1,
+      height: '1px',
+      background: 'linear-gradient(to left, transparent, rgba(193,168,106,0.35))',
+    }} />
+  </motion.div>
+);
+
+// ============================================================
+// FRAGMENT TYPES & DATA
+// ============================================================
+type FragmentType = 'XL' | 'LG' | 'MD' | 'SM';
+interface Fragment {
+  id: number;
+  type: FragmentType;
+  text: string;
+  align: 'left' | 'center' | 'right';
+  offset?: string;
+}
+
+const fragments: Fragment[] = [
+  { id: 1,  type: 'MD', text: "Some things cannot be said.",                              align: 'left',   offset: 'pl-[14%]' },
+  { id: 2,  type: 'LG', text: "In a single glance, held softly between breaths.",        align: 'right',  offset: 'pr-[16%]' },
+  { id: 3,  type: 'SM', text: "✧",                                                       align: 'center' },
+  { id: 4,  type: 'XL', text: "Not every love story needs words.",                       align: 'center' },
+  { id: 5,  type: 'MD', text: "Only felt.",                                              align: 'right',  offset: 'pr-[12%]' },
+  { id: 6,  type: 'SM', text: "· ✦ ·",                                                   align: 'center' },
+  { id: 7,  type: 'LG', text: "A promise written tenderly in time.",                     align: 'left',   offset: 'pl-[10%]' },
+  { id: 8,  type: 'MD', text: "The quiet certainty of you.",                             align: 'center' },
+  { id: 9,  type: 'XL', text: "Two hearts, one quiet forever.",                          align: 'center' },
+  { id: 10, type: 'SM', text: "✧",                                                       align: 'center' },
+  { id: 11, type: 'LG', text: "The space between our hands, before they touch.",         align: 'right',  offset: 'pr-[14%]' },
+];
+
+// ============================================================
+// MAIN COMPONENT
+// ============================================================
+export const FragmentsOfLove: React.FC = () => {
   return (
-    <section className="relative px-4 py-32 sm:px-6 lg:px-10 overflow-hidden">
-      {/* Subtle Atmospheric Light Leak */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.04)_0%,transparent_70%)] pointer-events-none" />
+    <section
+      id="story"
+      className="relative w-full flex flex-col items-center pt-0 pb-0 overflow-hidden"
+    >
 
-      <div className="mx-auto max-w-4xl relative z-10">
-        
-        {/* Editorial Section Header */}
-        <div className="text-center mb-24">
-          <p className="text-[9px] uppercase tracking-[0.5em] text-[#D4AF37]/70 font-semibold mb-4">
-            Our Journey
-          </p>
-          <h2 className="font-serif text-4xl sm:text-5xl text-white drop-shadow-sm mb-6">
-            A Story of Us
-          </h2>
-          <div className="mx-auto w-12 h-px bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent" />
-        </div>
+      {/* ── BACKGROUND: HARD HEX BLEND TO AVOID SAFARI/CHROME BANDING BUG ── */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, #0a0806 0%, #120e0b 40%, #120e0b 70%, #0d0b09 100%)',
+        }}
+      />
+      
+      {/* Glows diatur berlapis secara terpisah */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none mix-blend-screen"
+        style={{
+          background: `
+            radial-gradient(ellipse 50% 40% at 50% 35%,
+              rgba(209,176,107,0.025) 0%,
+              transparent 65%
+            ),
+            radial-gradient(ellipse 35% 25% at 20% 70%,
+              rgba(234,219,195,0.012) 0%,
+              transparent 60%
+            )
+          `,
+        }}
+      />
 
-        {/* The Timeline Track */}
-        <div className="relative">
-          {/* Central Gold Line (Cinematic Fade Edge) */}
-          <div 
-            className="absolute left-4 sm:left-1/2 top-0 bottom-0 w-[1px] -translate-x-1/2 bg-gradient-to-b from-transparent via-[#D4AF37]/30 to-transparent" 
-            style={{ maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)' }}
+      {/* ── PARTICLES ── */}
+      <div className="absolute inset-0 z-10 pointer-events-none" aria-hidden="true">
+        {particles.map((p) => (
+          <motion.div
+            key={p.id}
+            className="absolute rounded-full"
+            style={{
+              left: p.left,
+              top: p.top,
+              width: `${p.size}px`,
+              height: `${p.size}px`,
+              background: `rgba(209,176,107, ${p.opacity})`,
+              filter: p.blur,
+            }}
+            animate={{
+              y: ['-18px', '18px', '-18px'],
+              opacity: [p.opacity * 0.3, p.opacity, p.opacity * 0.3],
+            }}
+            transition={{
+              duration: p.duration,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: p.delay,
+            }}
           />
+        ))}
+      </div>
 
-          <div className="space-y-16 sm:space-y-24">
-            {milestones.map((milestone, index) => {
-              const isEven = index % 2 === 0;
-              return (
-                <motion.div 
-                  key={milestone.year}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 1, ease: "easeOut" }}
-                  className={`relative flex flex-col sm:flex-row items-start sm:items-center gap-8 sm:gap-12 ${isEven ? 'sm:flex-row-reverse' : ''}`}
+      {/* ══════════════════════════════════════════════════════ */}
+      {/* SECTION 1: SACRED EMBLEM                               */}
+      {/* ══════════════════════════════════════════════════════ */}
+      <div className="relative z-30 flex flex-col items-center w-full mt-4">
+        <SacredEmblem />
+      </div>
+
+      {/* ══════════════════════════════════════════════════════ */}
+      {/* SECTION 2: TITLE BLOCK — one clean hierarchy          */}
+      {/* ══════════════════════════════════════════════════════ */}
+      <div className="relative z-30 flex flex-col items-center w-full max-w-4xl mx-auto px-6 text-center mb-28">
+
+        {/* Eyebrow label - Diubah menjadi Gaya Badge Mewah Sesuai Permintaan */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+          className="inline-flex items-center gap-2.5 rounded-full border border-[#D4AF37]/40 bg-[#D4AF37]/10 px-5 py-2.5 mb-8 shadow-[0_0_20px_rgba(212,175,55,0.15)] backdrop-blur-md"
+        >
+          <Sparkles className="h-3.5 w-3.5 text-[#D4AF37]" />
+          <span className="text-[0.65rem] font-medium uppercase tracking-[0.35em] text-[#D4AF37] pt-[1px]">
+            Moments Before Forever
+          </span>
+        </motion.div>
+
+        {/* Main title — "Fragments of Love" */}
+        <motion.h2
+          initial={{ opacity: 0, y: 24, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          style={{
+            fontFamily: 'serif',
+            fontSize: 'clamp(2.4rem, 6vw, 4.2rem)',
+            fontWeight: 200,
+            letterSpacing: '0.06em',
+            color: '#F2E7D9',
+            textShadow: `
+              0 0 60px rgba(209,176,107,0.18),
+              0 0 120px rgba(209,176,107,0.08),
+              0 2px 40px rgba(0,0,0,0.6)
+            `,
+            marginBottom: '20px',
+            lineHeight: 1.15,
+          }}
+        >
+          Fragments of Love
+        </motion.h2>
+
+        {/* Luxury divider */}
+        <LuxuryDivider />
+      </div>
+
+      {/* ══════════════════════════════════════════════════════ */}
+      {/* SECTION 3: FRAGMENT POEMS                              */}
+      {/* ══════════════════════════════════════════════════════ */}
+      <div className="relative z-30 flex flex-col w-full max-w-5xl mx-auto px-6 gap-10 sm:gap-14 mb-16">
+        {fragments.map((frag, index) => {
+
+          // Typography scale
+          let textStyle: React.CSSProperties = {};
+          if (frag.type === 'XL') textStyle = {
+            fontFamily: 'serif',
+            fontSize: 'clamp(1.8rem, 4vw, 3.2rem)',
+            fontWeight: 200,
+            color: '#F2E7D9',
+            textShadow: '0 0 40px rgba(209,176,107,0.12), 0 2px 20px rgba(0,0,0,0.5)',
+            letterSpacing: '0.02em',
+          };
+          if (frag.type === 'LG') textStyle = {
+            fontFamily: 'serif',
+            fontSize: 'clamp(1.3rem, 3vw, 2.2rem)',
+            fontStyle: 'italic',
+            fontWeight: 300,
+            color: '#CDBFAE',
+            letterSpacing: '0.01em',
+          };
+          if (frag.type === 'MD') textStyle = {
+            fontFamily: 'serif',
+            fontSize: 'clamp(1.05rem, 2.2vw, 1.55rem)',
+            fontStyle: 'italic',
+            fontWeight: 300,
+            color: '#A89580',
+          };
+          if (frag.type === 'SM') textStyle = {
+            fontFamily: 'serif',
+            fontSize: '0.8rem',
+            letterSpacing: '0.4em',
+            color: 'rgba(184,156,94,0.45)',
+          };
+
+          let alignClass = 'text-center';
+          if (frag.align === 'left')  alignClass = `text-left  ${frag.offset ?? 'pl-[10%]'}`;
+          if (frag.align === 'right') alignClass = `text-right ${frag.offset ?? 'pr-[10%]'}`;
+
+          const floatY = index % 2 === 0 ? ['0px', '-5px', '0px'] : ['0px', '5px', '0px'];
+          const floatDuration = 13 + (index % 7);
+
+          return (
+            <div key={frag.id} className={`w-full ${alignClass}`}>
+              <motion.div
+                initial={{ opacity: 0, y: 28, filter: 'blur(10px)' }}
+                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{
+                  duration: 1.8,
+                  ease: [0.16, 1, 0.3, 1],
+                  delay: 0.12 + index * 0.07,
+                }}
+                className="inline-block"
+              >
+                <motion.div
+                  animate={{ y: floatY }}
+                  transition={{ duration: floatDuration, repeat: Infinity, ease: 'easeInOut' }}
+                  style={textStyle}
                 >
-                  {/* Timeline Glowing Node */}
-                  <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 flex items-center justify-center w-8 h-8">
-                    <div className="w-2 h-2 rounded-full bg-[#D4AF37] shadow-[0_0_15px_rgba(212,175,55,0.6)]" />
-                  </div>
-
-                  {/* Empty space for alternating layout on desktop */}
-                  <div className="hidden sm:block w-1/2" />
-
-                  {/* Smoked Glass Card */}
-                  <div className={`w-full sm:w-1/2 pl-12 sm:pl-0 ${isEven ? 'sm:pr-16 text-left sm:text-right' : 'sm:pl-16 text-left'}`}>
-                    <div className="p-8 rounded-[1.5rem] border border-white/[0.05] bg-white/[0.02] backdrop-blur-md shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:border-white/[0.08] transition-colors duration-500">
-                      <span className="inline-block text-[10px] uppercase tracking-[0.4em] text-[#D4AF37] font-bold mb-3">
-                        {milestone.year}
-                      </span>
-                      <h3 className="font-serif text-2xl text-white mb-3 tracking-wide">
-                        {milestone.title}
-                      </h3>
-                      <p className="text-[12px] font-light leading-relaxed text-white/50 tracking-wide">
-                        {milestone.description}
-                      </p>
-                    </div>
-                  </div>
+                  {frag.text}
                 </motion.div>
-              )
-            })}
-          </div>
-        </div>
-
-        <div className="mt-24 flex justify-center opacity-30">
-          <Heart className="w-4 h-4 text-[#D4AF37]" />
-        </div>
+              </motion.div>
+            </div>
+          );
+        })}
       </div>
     </section>
-  )
-}
+  );
+};

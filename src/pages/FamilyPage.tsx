@@ -8,8 +8,9 @@ import { useCountdown } from '@/hooks/useCountdown'
 import { OnboardingOverlay } from '@/components/invitation/OnboardingOverlay'
 
 // --- NEW LUXURY SECTIONS ---
-import { MemoryTimelineSection } from '@/components/invitation/MemoryTimelineSection'
-import { FamilyMessageSection } from '@/components/invitation/FamilyMessageSection'
+import { FragmentsOfLove } from '@/components/invitation/MemoryTimelineSection'
+import { HeartfeltNote } from '@/components/invitation/FamilyMessageSection'
+import { LuxuryFooter } from '@/components/invitation/LuxuryFooter'
 
 const fadeUp = {
   initial: { opacity: 0, y: 32 },
@@ -18,7 +19,6 @@ const fadeUp = {
   transition: { duration: 0.6, ease: "easeOut" as const } 
 }
 
-// --- EFEK LUXURY (Di-copy dari HomePage agar FamilyPage mandiri) ---
 const Stardust = () => {
   const particles = useMemo(() => {
     return Array.from({ length: 45 }).map((_, i) => ({
@@ -332,19 +332,14 @@ export default function FamilyPage() {
           </div>
         </section>
 
-        {/* 5. NEW: MEMORY TIMELINE SECTION */}
-        <MemoryTimelineSection />
+        {/* 5. THE POEM */}
+        <FragmentsOfLove />
 
-        {/* 6. NEW: FAMILY MESSAGE SECTION */}
-        <FamilyMessageSection />
+        {/* 6. THE GLASS CARD */}
+        <HeartfeltNote />
 
-        {/* 7. FOOTER */}
-        <section className="pb-24 pt-10 text-center">
-          <motion.div {...fadeUp} viewport={{ once: true, amount: 0.5 }}>
-            <p className="font-script text-4xl md:text-5xl text-[#D4AF37]/70">Arin & Afif</p>
-            <p className="mt-4 text-[0.65rem] uppercase tracking-[0.4em] text-[#D4AF37]/70">Forever Begins • 1 June 2026</p>
-          </motion.div>
-        </section>
+        {/* 7. CINEMATIC FOOTER (Menggantikan footer lama) */}
+        <LuxuryFooter />
       </main>
 
       <audio ref={audioRef} src={invitationData.musicUrl} loop preload="none" />
