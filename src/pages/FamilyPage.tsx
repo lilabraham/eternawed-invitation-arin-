@@ -324,6 +324,49 @@ export default function FamilyPage() {
                           <p className={`leading-relaxed ${event.isHighlight ? "text-sm text-white/65 max-w-xs" : "text-sm text-white/45"}`}>{event.address}</p>
                         </div>
                       </div>
+                      
+                      {/* --- TAMBAHAN BARU: TOMBOL CALENDAR & MAPS --- */}
+                      <div
+                        className={`mt-auto flex flex-col gap-3 sm:flex-row
+                          ${event.isHighlight ? "justify-center pt-12" : "pt-8"}`}
+                      >
+                        <a
+                          href={event.calendarUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={`flex h-12 items-center justify-center rounded-full
+                            font-medium tracking-wide transition-all duration-300
+                            ${event.isHighlight
+                              ? [
+                                  "px-12 bg-[#D4AF37] text-[#0e0b08] text-sm",
+                                  "shadow-[0_0_24px_rgba(212,175,55,0.22)]",
+                                  "hover:shadow-[0_0_36px_rgba(212,175,55,0.38)] hover:scale-[1.02] hover:bg-[#dbb93d]",
+                                ].join(" ")
+                              : "flex-1 border border-white/[0.08] bg-white/[0.02] text-white/40 text-xs hover:text-white/65 hover:border-white/15"
+                            }`}
+                        >
+                          Save to Calendar
+                        </a>
+
+                        <a
+                          href={event.mapsUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={`flex h-12 items-center justify-center rounded-full
+                            transition-all duration-300
+                            ${event.isHighlight
+                              ? [
+                                  "px-12 border border-[#D4AF37]/25 text-[#D4AF37]/75 text-sm tracking-wide",
+                                  "hover:border-[#D4AF37]/50 hover:text-[#D4AF37] hover:bg-[#D4AF37]/[0.05]",
+                                ].join(" ")
+                              : "flex-1 text-xs text-white/35 underline underline-offset-4 decoration-white/15 hover:text-white/55"
+                            }`}
+                        >
+                          Google Maps
+                        </a>
+                      </div>
+                      {/* --- AKHIR TAMBAHAN BARU --- */}
+
                     </div>
                   </div>
                 </motion.div>
